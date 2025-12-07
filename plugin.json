@@ -1,7 +1,7 @@
 {
   "name": "Events Enhanced",
   "description": "Enhance Matomo native events reports",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "theme": false,
   "require": {
     "matomo": ">=5.0.0,<6.0.0-b1"
