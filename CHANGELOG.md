@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.0.4
+
+- update: Plugin name to match marketplace requirements
+
 ### v1.0.3
 
 - update: Plugin description to match marketplace requirements
