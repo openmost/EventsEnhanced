@@ -45,7 +45,7 @@ export default defineComponent({
     },
     link: {
       type: String,
-      default: 'https://openmost.io/products/events-enhanced-pro?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced&utm_campaign=plugin_premium_events_enhanced',
+      default: 'https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced&utm_campaign=plugin_premium_events_enhanced',
     },
     image: {
       type: String,

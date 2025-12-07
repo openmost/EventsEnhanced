@@ -11,8 +11,10 @@ Each detail page includes:
    - For Category pages: Actions and Names reports filtered to that category
    - For Action pages: Categories and Names reports filtered to that action
    - For Name pages: Categories and Actions reports filtered to that name
-3. **Page Context (premium)**: Page URLs and Page Titles where events with this dimension value were actually triggered (not just pages visited during sessions with events)
-4. **Custom Dimensions (premium)**: If you have action-scoped Custom Dimensions, their values are displayed for events matching the selected dimension value
+3. **Page Context ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: Page URLs and Page Titles where events with this dimension value were actually triggered (not just pages visited during sessions with events)
+4. **Custom Dimensions ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: If you have action-scoped Custom Dimensions, their values are displayed for events matching the selected dimension value
+
+[Purchase EventsEnhanced Premium version](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced)
 
 ### API Methods
 

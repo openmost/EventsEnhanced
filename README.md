@@ -4,14 +4,13 @@
 
 EventsEnhanced extends Matomo's native Events reports by adding detailed dimension pages for each event category, action, and name value.
 
-
 ## Features
 
 - **Detail Pages**: Click on any event dimension value (category, action, or name) to open a dedicated detail page
 - **Evolution Graph**: View how the event dimension value trends over time
 - **Related Dimension Reports**: See breakdowns by other event dimensions
-- **Page Context (premium)**: View which page URLs and page titles triggered events with the selected dimension value
-- **Custom Dimensions (premium)**: If you have Custom Dimensions configured with action scope, see their values for events with the selected dimension value
+- **Page Context ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: View which page URLs and page titles triggered events with the selected dimension value
+- **Custom Dimensions ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: If you have Custom Dimensions configured with action scope, see their values for events with the selected dimension value
 
 ## How to Use
 
@@ -31,6 +30,8 @@ EventsEnhanced extends Matomo's native Events reports by adding detailed dimensi
 1. Place this plugin folder in the `plugins` directory of your Matomo installation
 2. Go to Administration > Plugins
 3. Activate the EventsEnhanced plugin
+
+[Purchase EventsEnhanced Premium version](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced)
 
 ## License
 
