@@ -1,0 +1,9 @@
+<div class="reporting-page">
+    <div
+        vue-entry="EventsEnhanced.EventDetailsPage"
+        initial-dimension-type="{{ selectedDimensionType|default('name') }}"
+        initial-dimension-value="{{ selectedDimensionValue|default('') }}"
+        dimension-values="{{ dimensionValues|default([])|json_encode }}"
+        custom-dimensions="{{ customDimensions|default([])|json_encode }}"
+    ></div>
+</div>
