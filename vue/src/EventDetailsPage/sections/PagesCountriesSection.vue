@@ -1,10 +1,17 @@
 <template>
   <div class="row">
     <div class="col s12 m6">
-      <GoPremiumWidget :title="translate('Actions_PageUrls')" image="page-url" />
+      <GoPremiumWidget
+        :title="translate('Actions_PageUrls')"
+        image="page-url"
+        :image-height="886"
+      />
     </div>
     <div class="col s12 m6">
-      <GoPremiumWidget :title="translate('UserCountry_Country')" image="country" />
+      <GoPremiumWidget
+        :title="translate('UserCountry_Country')"
+        image="country"
+      />
     </div>
   </div>
 </template>

@@ -12,8 +12,8 @@
           <img class="omeh-premium-report-image"
                :src="`/plugins/EventsEnhanced/images/${image}.jpg`"
                alt="Blurred premium report"
-               width=""
-               height=""
+               :width="imageWidth"
+               :height="imageHeight"
                loading="lazy"
           >
           <div class="omeh-premium-link-wrapper">
@@ -50,6 +50,14 @@ export default defineComponent({
     image: {
       type: String,
       default: 'report',
+    },
+    imageWidth: {
+      type: Number,
+      default: 1203,
+    },
+    imageHeight: {
+      type: Number,
+      default: 846,
     },
   },
 });
@@ -109,11 +117,19 @@ export default defineComponent({
   padding: 20px;
 
   .omeh-premium-link {
+    position: relative;
     border-radius: 8px;
     background: #FFF;
     box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.05);
     padding: 1rem;
     text-align: center;
+    transition: .2s ease transform, .2s ease box-shadow;
+    transform-origin: center center;
+
+    &:hover {
+      box-shadow: 2px 2px 6px 0 rgba(255, 163, 42, 0.1);
+      transform: scale(1.03);
+    }
 
     .icon-locked {
       color: #FFA32A;
@@ -126,6 +142,16 @@ export default defineComponent({
 
       .omeh-link {
         color: inherit;
+        transition: .2s ease color;
+
+        &:after {
+          content: '';
+          width: 100%;
+          height: 100%;
+          inset: 0;
+          display: block;
+          position: absolute;
+        }
       }
     }
   }

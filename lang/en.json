@@ -28,7 +28,7 @@
         "DimensionsNoData": "Dimensions %s have no data for the selected period.",
         "EventDetailsRowActionTitle": "View Event Details",
         "EventDetailsRowActionDescription": "Open detailed analytics page for this event",
-        "PremiumLinkText": "Purchase EventsEnhanced Premium plugin",
-        "PremiumText": "to display data for report:"
+        "PremiumLinkText": "Purchase the EventsEnhanced Premium plugin",
+        "PremiumText": "to display report data for"
     }
 }
