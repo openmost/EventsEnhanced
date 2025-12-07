@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.0.2
+
+- update: Define plugin licence to GPL v3+
+
 ### v1.0.1
 
 - add: Cover image for Matomo marketplace

@@ -1,7 +1,7 @@
 {
   "name": "Events Enhanced",
   "description": "Enhance Matomo native events reports",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "theme": false,
   "require": {
     "matomo": ">=5.0.0,<6.0.0-b1"
@@ -19,7 +19,7 @@
     "source": "https:\/\/github.com\/openmost\/EventsEnhanced"
   },
   "homepage": "https:\/\/openmost.io\/products\/events-enhanced\/",
-  "license": "Openmost Private Property",
+  "license": "GPL v3+",
   "keywords": [
     "événement",
     "événements",
