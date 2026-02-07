@@ -94,6 +94,9 @@ class EventsEnhanced extends \Piwik\Plugin
         $translationKeys[] = 'Actions_PageUrls';
         $translationKeys[] = 'UserCountry_Country';
 
+        // CustomDimensions translation key (for fallback display)
+        $translationKeys[] = 'CustomDimensions_CustomDimensionId';
+
         // Premium translation keys
         $translationKeys[] = 'EventsEnhanced_PremiumLinkText';
         $translationKeys[] = 'EventsEnhanced_PremiumText';

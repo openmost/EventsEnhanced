@@ -45,6 +45,11 @@ class GetEventCategoriesEvolution extends Report
     {
         $view->config->show_goals = false;
         $view->config->show_search = false;
+
+        // Limit to top 10 event categories to prevent graph overload
+        $view->requestConfig->filter_sort_column = 'nb_events';
+        $view->requestConfig->filter_sort_order = 'desc';
+        $view->requestConfig->filter_limit = 10;
     }
 
     public function getDefaultTypeViewDataTable()

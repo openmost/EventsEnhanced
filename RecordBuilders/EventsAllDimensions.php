@@ -171,9 +171,9 @@ class EventsAllDimensions extends RecordBuilder
             Metrics::INDEX_NB_VISITS                => $row[Metrics::INDEX_NB_VISITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS            => $row[Metrics::INDEX_EVENT_NB_HITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE => $row[Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE] ?? 0,
-            Metrics::INDEX_EVENT_SUM_EVENT_VALUE    => round($row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0, 2),
-            Metrics::INDEX_EVENT_MIN_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE]) ? round($row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE], 2) : null,
-            Metrics::INDEX_EVENT_MAX_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE]) ? round($row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE], 2) : null,
+            Metrics::INDEX_EVENT_SUM_EVENT_VALUE    => $row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0,
+            Metrics::INDEX_EVENT_MIN_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE] ?? null) ? (float) $row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE] : false,
+            Metrics::INDEX_EVENT_MAX_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE] ?? null) ? (float) $row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE] : false,
         ];
 
         // Level 1: Sum to Category row

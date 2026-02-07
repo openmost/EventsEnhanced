@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-content omeh-card-content">
       <h2 class="card-title omeh-card-title">
-        <div class="title" tabindex="6">{{ title }}</div>
+        <div class="title">{{ title }}</div>
         <div class="omeh-badge-wrapper">
           <span class="omeh-badge">Premium</span>
         </div>
@@ -10,7 +10,7 @@
       <slot>
         <div class="omeh-premium-report-image-wrapper">
           <img class="omeh-premium-report-image"
-               :src="`/plugins/EventsEnhanced/images/${image}.jpg`"
+               :src="`${matomoBaseUrl}plugins/EventsEnhanced/images/${image}.jpg`"
                alt="Blurred premium report"
                :width="imageWidth"
                :height="imageHeight"
@@ -38,6 +38,11 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  computed: {
+    matomoBaseUrl(): string {
+      return (window as any).Matomo?.piwikUrl || '/';
+    },
+  },
   props: {
     title: {
       type: String,
@@ -78,30 +83,30 @@ export default defineComponent({
 .omeh-badge-wrapper {
   line-height: normal;
   display: inline-block;
+}
 
-  .omeh-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    background-color: #FFA32A;
-    font-size: 12px;
-    color: #000;
-    border-radius: 1rem;
-    line-height: normal;
-  }
+.omeh-badge-wrapper .omeh-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: #FFA32A;
+  font-size: 12px;
+  color: #000;
+  border-radius: 1rem;
+  line-height: normal;
 }
 
 .omeh-premium-report-image-wrapper {
   position: relative;
   margin-left: -20px;
   margin-right: -20px;
+}
 
-  .omeh-premium-report-image {
-    background-color: #CCCCCC;
-    display: block;
-    width: 100%;
-    min-height: 200px;
-    height: auto;
-  }
+.omeh-premium-report-image-wrapper .omeh-premium-report-image {
+  background-color: #CCCCCC;
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  height: auto;
 }
 
 .omeh-premium-link-wrapper {
@@ -109,51 +114,51 @@ export default defineComponent({
   inset: 0;
   min-height: 100%;
   height: 100%;
-  width: 100ù;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
   align-items: center;
   padding: 20px;
+}
 
-  .omeh-premium-link {
-    position: relative;
-    border-radius: 8px;
-    background: #FFF;
-    box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.05);
-    padding: 1rem;
-    text-align: center;
-    transition: .2s ease transform, .2s ease box-shadow;
-    transform-origin: center center;
+.omeh-premium-link-wrapper .omeh-premium-link {
+  position: relative;
+  border-radius: 8px;
+  background: #FFF;
+  box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  text-align: center;
+  transition: .2s ease transform, .2s ease box-shadow;
+  transform-origin: center center;
+}
 
-    &:hover {
-      box-shadow: 2px 2px 6px 0 rgba(255, 163, 42, 0.1);
-      transform: scale(1.03);
-    }
+.omeh-premium-link-wrapper .omeh-premium-link:hover {
+  box-shadow: 2px 2px 6px 0 rgba(255, 163, 42, 0.1);
+  transform: scale(1.03);
+}
 
-    .icon-locked {
-      color: #FFA32A;
-      margin-right: .5rem;
-    }
+.omeh-premium-link-wrapper .omeh-premium-link .icon-locked {
+  color: #FFA32A;
+  margin-right: .5rem;
+}
 
-    p {
-      padding-bottom: 0 !important;
-      margin-bottom: 0 !important;
+.omeh-premium-link-wrapper .omeh-premium-link p {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
 
-      .omeh-link {
-        color: inherit;
-        transition: .2s ease color;
+.omeh-premium-link-wrapper .omeh-premium-link p .omeh-link {
+  color: inherit;
+  transition: .2s ease color;
+}
 
-        &:after {
-          content: '';
-          width: 100%;
-          height: 100%;
-          inset: 0;
-          display: block;
-          position: absolute;
-        }
-      }
-    }
-  }
+.omeh-premium-link-wrapper .omeh-premium-link p .omeh-link:after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  display: block;
+  position: absolute;
 }
 </style>

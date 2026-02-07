@@ -11,11 +11,13 @@ namespace Piwik\Plugins\EventsEnhanced;
 
 use Piwik\Archive;
 use Piwik\Common;
+use Piwik\Container\StaticContainer;
 use Piwik\DataTable;
 use Piwik\Metrics;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomDimensions\API as CustomDimensionsAPI;
 use Piwik\Plugins\CustomDimensions\CustomDimensions;
+use Psr\Log\LoggerInterface;
 
 /**
  * API for EventsEnhanced plugin
@@ -39,29 +41,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventActionsForCategory($idSite, $period, $date, $eventCategory, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventCategory = Common::unsanitizeInputValue($eventCategory);
-
-        try {
-            // Use createDataTableFromArchive with expanded=true to load subtables
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_CATEGORY_ACTIONS,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            // Filter to the specific category and extract its subtable (actions)
-            $this->filterAndFlattenToSubtable($dataTable, $eventCategory);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_CATEGORY_ACTIONS,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventCategory),
+            $segment
+        );
     }
 
     /**
@@ -77,27 +64,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventNamesForCategory($idSite, $period, $date, $eventCategory, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventCategory = Common::unsanitizeInputValue($eventCategory);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_CATEGORY_NAMES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventCategory);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_CATEGORY_NAMES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventCategory),
+            $segment
+        );
     }
 
     /**
@@ -113,27 +87,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventCategoriesForAction($idSite, $period, $date, $eventAction, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventAction = Common::unsanitizeInputValue($eventAction);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_ACTION_CATEGORIES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventAction);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_ACTION_CATEGORIES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventAction),
+            $segment
+        );
     }
 
     /**
@@ -149,27 +110,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventNamesForAction($idSite, $period, $date, $eventAction, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventAction = Common::unsanitizeInputValue($eventAction);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_ACTION_NAMES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventAction);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_ACTION_NAMES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventAction),
+            $segment
+        );
     }
 
     /**
@@ -185,27 +133,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventCategoriesForName($idSite, $period, $date, $eventName, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventName = Common::unsanitizeInputValue($eventName);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_NAME_CATEGORIES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventName);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_NAME_CATEGORIES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventName),
+            $segment
+        );
     }
 
     /**
@@ -221,27 +156,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventActionsForName($idSite, $period, $date, $eventName, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventName = Common::unsanitizeInputValue($eventName);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_NAME_ACTIONS,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventName);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_NAME_ACTIONS,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventName),
+            $segment
+        );
     }
 
     /**
@@ -257,27 +179,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventValuesForCategory($idSite, $period, $date, $eventCategory, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventCategory = Common::unsanitizeInputValue($eventCategory);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_CATEGORY_VALUES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventCategory);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_CATEGORY_VALUES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventCategory),
+            $segment
+        );
     }
 
     /**
@@ -293,27 +202,14 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventValuesForAction($idSite, $period, $date, $eventAction, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
-
-        $eventAction = Common::unsanitizeInputValue($eventAction);
-
-        try {
-            $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_ACTION_VALUES,
-                $idSite,
-                $period,
-                $date,
-                $segment,
-                $expanded = true
-            );
-
-            $this->filterAndFlattenToSubtable($dataTable, $eventAction);
-
-            $dataTable->queueFilter('ReplaceColumnNames');
-            return $dataTable;
-        } catch (\Exception $e) {
-            return new DataTable();
-        }
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_ACTION_VALUES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventAction),
+            $segment
+        );
     }
 
     /**
@@ -329,13 +225,37 @@ class API extends \Piwik\Plugin\API
      */
     public function getEventValuesForName($idSite, $period, $date, $eventName, $segment = false)
     {
-        Piwik::checkUserHasViewAccess($idSite);
+        return $this->getSubtableForDimension(
+            Archiver::RECORD_EVENT_NAME_VALUES,
+            $idSite,
+            $period,
+            $date,
+            Common::unsanitizeInputValue($eventName),
+            $segment
+        );
+    }
 
-        $eventName = Common::unsanitizeInputValue($eventName);
+    /**
+     * Shared logic for all dimension-based subtable API methods.
+     *
+     * Retrieves archived data for the given record, filters to the specific
+     * dimension value's subtable, and queues column name replacement.
+     *
+     * @param string $recordName The archive record constant name
+     * @param int $idSite
+     * @param string $period
+     * @param string $date
+     * @param string $dimensionValue The unsanitized dimension value to filter by
+     * @param bool|string $segment
+     * @return DataTable
+     */
+    private function getSubtableForDimension(string $recordName, $idSite, $period, $date, string $dimensionValue, $segment)
+    {
+        Piwik::checkUserHasViewAccess($idSite);
 
         try {
             $dataTable = Archive::createDataTableFromArchive(
-                Archiver::RECORD_EVENT_NAME_VALUES,
+                $recordName,
                 $idSite,
                 $period,
                 $date,
@@ -343,11 +263,18 @@ class API extends \Piwik\Plugin\API
                 $expanded = true
             );
 
-            $this->filterAndFlattenToSubtable($dataTable, $eventName);
+            $this->filterAndFlattenToSubtable($dataTable, $dimensionValue);
 
             $dataTable->queueFilter('ReplaceColumnNames');
             return $dataTable;
         } catch (\Exception $e) {
+            StaticContainer::get(LoggerInterface::class)->warning(
+                'EventsEnhanced: failed to retrieve archive data for record {record}: {exception}',
+                [
+                    'record' => $recordName,
+                    'exception' => $e,
+                ]
+            );
             return new DataTable();
         }
     }
@@ -389,50 +316,6 @@ class API extends \Piwik\Plugin\API
         // No matching row or subtable found, return empty table
         $table->deleteRowsOffset(0);
     }
-
-    /**
-     * Filter for nested subtables (event dimension -> custom dimension id -> values)
-     * Works with both DataTable and DataTable\Map
-     */
-    private function filterAndFlattenNestedSubtable($dataTable, string $eventLabel, string $dimensionLabel): void
-    {
-        if ($dataTable instanceof DataTable\Map) {
-            $dataTable->filter(function (DataTable $table) use ($eventLabel, $dimensionLabel) {
-                $this->extractNestedSubtableByLabel($table, $eventLabel, $dimensionLabel);
-            });
-        } else {
-            $this->extractNestedSubtableByLabel($dataTable, $eventLabel, $dimensionLabel);
-        }
-    }
-
-    /**
-     * Extract nested subtable by navigating two levels
-     */
-    private function extractNestedSubtableByLabel(DataTable $table, string $eventLabel, string $dimensionLabel): void
-    {
-        $row = $table->getRowFromLabel($eventLabel);
-
-        if ($row) {
-            $dimensionTable = $row->getSubtable();
-            if ($dimensionTable) {
-                $dimensionRow = $dimensionTable->getRowFromLabel($dimensionLabel);
-                if ($dimensionRow) {
-                    $valueTable = $dimensionRow->getSubtable();
-                    if ($valueTable) {
-                        $table->deleteRowsOffset(0);
-                        foreach ($valueTable->getRows() as $subRow) {
-                            $table->addRow($subRow);
-                        }
-                        return;
-                    }
-                }
-            }
-        }
-
-        // No matching row found, return empty table
-        $table->deleteRowsOffset(0);
-    }
-
 
     /**
      * Get available custom dimensions for a site that have action scope
@@ -546,6 +429,8 @@ class API extends \Piwik\Plugin\API
             'format' => 'original',
         ]);
 
+        $this->limitEvolutionDataTable($dataTable);
+
         return $dataTable;
     }
 
@@ -570,6 +455,8 @@ class API extends \Piwik\Plugin\API
             'segment' => $segment,
             'format' => 'original',
         ]);
+
+        $this->limitEvolutionDataTable($dataTable);
 
         return $dataTable;
     }
@@ -596,6 +483,56 @@ class API extends \Piwik\Plugin\API
             'format' => 'original',
         ]);
 
+        $this->limitEvolutionDataTable($dataTable);
+
         return $dataTable;
+    }
+
+    /**
+     * Limit evolution data to the top 10 labels by total nb_events across all periods.
+     * Applied manually because format=original bypasses generic filters.
+     * For DataTable\Map, labels are determined globally so series count is consistent.
+     */
+    private function limitEvolutionDataTable($dataTable): void
+    {
+        $limit = 10;
+        $metricIndex = Metrics::INDEX_EVENT_NB_HITS;
+
+        if ($dataTable instanceof DataTable\Map) {
+            // Sum nb_events across all periods per label
+            $totals = [];
+            foreach ($dataTable->getDataTables() as $table) {
+                foreach ($table->getRows() as $row) {
+                    $label = $row->getColumn('label');
+                    $totals[$label] = ($totals[$label] ?? 0) + ($row->getColumn($metricIndex) ?: 0);
+                }
+            }
+
+            // Sort descending and keep top N labels
+            arsort($totals);
+            $topLabels = array_slice(array_keys($totals), 0, $limit);
+
+            // Filter each period's table to only include top labels
+            foreach ($dataTable->getDataTables() as $table) {
+                $this->keepOnlyLabels($table, $topLabels);
+            }
+        } elseif ($dataTable instanceof DataTable) {
+            $dataTable->filter('Sort', [$metricIndex, 'desc']);
+            $dataTable->filter('Truncate', [$limit]);
+        }
+    }
+
+    /**
+     * Remove all rows from a DataTable whose label is not in the allowed list
+     */
+    private function keepOnlyLabels(DataTable $table, array $labels): void
+    {
+        $rowsToDelete = [];
+        foreach ($table->getRows() as $id => $row) {
+            if (!in_array($row->getColumn('label'), $labels, true)) {
+                $rowsToDelete[] = $id;
+            }
+        }
+        $table->deleteRows($rowsToDelete);
     }
 }

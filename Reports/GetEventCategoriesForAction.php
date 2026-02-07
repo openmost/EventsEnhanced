@@ -9,7 +9,6 @@
 
 namespace Piwik\Plugins\EventsEnhanced\Reports;
 
-use Piwik\Common;
 use Piwik\Piwik;
 use Piwik\Plugin\Report;
 use Piwik\Plugin\ViewDataTable;
@@ -32,24 +31,20 @@ class GetEventCategoriesForAction extends Report
         $this->dimension = new EventCategory();
         $this->order = 112;
 
-        // Don't show in any menu - this report is only used in event detail pages
-        $this->isSubtableReport = true;
-
         // Define metrics
         $this->metrics = ['nb_visits', 'nb_events', 'nb_events_with_value', 'sum_event_value'];
         $this->processedMetrics = [];
 
-        // Define parameters that need to be passed to the API
-        $this->parameters = [
-            'eventAction' => Common::getRequestVar('eventAction', '', 'string'),
-        ];
+        $this->parameters = ['eventAction' => ''];
     }
 
     public function configureView(ViewDataTable $view)
     {
         $view->config->show_search = true;
         $view->config->show_exclude_low_population = false;
-        $view->config->show_totals_row = true;
+        if (property_exists($view->config, 'show_totals_row')) {
+            $view->config->show_totals_row = true;
+        }
         $view->config->addTranslation('label', Piwik::translate('Events_EventCategory'));
         $view->config->addTranslation('nb_visits', Piwik::translate('General_ColumnNbVisits'));
         $view->config->addTranslation('nb_events', Piwik::translate('Events_NbEvents'));

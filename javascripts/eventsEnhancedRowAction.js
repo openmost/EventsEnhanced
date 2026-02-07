@@ -93,9 +93,9 @@
         }
 
         // Get current site/period/date from various sources
-        var idSite = broadcast.getValueFromHash('idSite') || piwik.idSite || broadcast.getValueFromUrl('idSite');
-        var period = broadcast.getValueFromHash('period') || piwik.period || broadcast.getValueFromUrl('period') || 'day';
-        var date = broadcast.getValueFromHash('date') || piwik.currentDateString || broadcast.getValueFromUrl('date') || 'today';
+        var idSite = broadcast.getValueFromHash('idSite') || Matomo.idSite || broadcast.getValueFromUrl('idSite');
+        var period = broadcast.getValueFromHash('period') || Matomo.period || broadcast.getValueFromUrl('period') || 'day';
+        var date = broadcast.getValueFromHash('date') || Matomo.currentDateString || broadcast.getValueFromUrl('date') || 'today';
 
         // Build URL to EventsEnhanced detail page
         var hashParams = {
@@ -136,7 +136,7 @@
             var reportKey = dataTableParams.module + '.' + dataTableParams.action;
 
             // Available on native Events reports and EventsEnhanced 3-dimensions report
-            return reportToDimensionType.hasOwnProperty(reportKey);
+            return Object.prototype.hasOwnProperty.call(reportToDimensionType, reportKey);
         },
 
         isAvailableOnRow: function (dataTableParams, tr) {

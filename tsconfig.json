@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "../../plugins/CoreVue/types/index.d.ts",
+    "vue/src/**/*.ts",
+    "vue/src/**/*.d.ts",
+    "vue/src/**/*.vue"
+  ]
+}

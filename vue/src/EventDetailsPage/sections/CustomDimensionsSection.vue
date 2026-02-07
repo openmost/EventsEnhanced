@@ -17,12 +17,24 @@
       </template>
       <template v-else>
         <div class="col s12 m6">
-          <GoPremiumWidget title="Custom Dimension 1" image="custom-dimension" />
-          <GoPremiumWidget title="Custom Dimension 3" image="custom-dimension" />
+          <GoPremiumWidget
+            :title="translate('CustomDimensions_CustomDimensionId', '1')"
+            image="custom-dimension"
+          />
+          <GoPremiumWidget
+            :title="translate('CustomDimensions_CustomDimensionId', '3')"
+            image="custom-dimension"
+          />
         </div>
         <div class="col s12 m6">
-          <GoPremiumWidget title="Custom Dimension 2" image="custom-dimension" />
-          <GoPremiumWidget title="Custom Dimension 4" image="custom-dimension" />
+          <GoPremiumWidget
+            :title="translate('CustomDimensions_CustomDimensionId', '2')"
+            image="custom-dimension"
+          />
+          <GoPremiumWidget
+            :title="translate('CustomDimensions_CustomDimensionId', '4')"
+            image="custom-dimension"
+          />
         </div>
       </template>
     </div>
@@ -31,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+import { translate } from 'CoreHome';
 import {
   CustomDimension,
 } from '../../types';
@@ -38,6 +51,9 @@ import GoPremiumWidget from '../GoPremiumWidget.vue';
 
 export default defineComponent({
   components: { GoPremiumWidget },
+  methods: {
+    translate,
+  },
   props: {
     customDimensions: {
       type: Array as PropType<CustomDimension[]>,

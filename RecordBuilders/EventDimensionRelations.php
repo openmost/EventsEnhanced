@@ -13,10 +13,14 @@ use Piwik\ArchiveProcessor;
 use Piwik\ArchiveProcessor\Record;
 use Piwik\ArchiveProcessor\RecordBuilder;
 use Piwik\Config\GeneralConfig;
+use Piwik\Container\StaticContainer;
 use Piwik\DataAccess\LogAggregator;
 use Piwik\DataTable;
 use Piwik\Metrics;
+use Piwik\Plugins\Actions\ArchivingHelper;
 use Piwik\Plugins\EventsEnhanced\Archiver;
+use Piwik\RankingQuery;
+use Psr\Log\LoggerInterface;
 
 /**
  * RecordBuilder for event dimension-to-dimension relationships
@@ -84,31 +88,24 @@ class EventDimensionRelations extends RecordBuilder
         ];
 
         try {
-            $this->aggregateEventDimensionRelations($reports, $logAggregator);
+            $this->aggregateDimensionReports($reports, $logAggregator);
+            $this->aggregateValueReports($reports, $logAggregator);
         } catch (\Exception $e) {
-            // Log error but return empty reports
+            $logger = StaticContainer::get(LoggerInterface::class);
+            $logger->error('EventsEnhanced: Failed to aggregate event dimension relations: {exception}', [
+                'exception' => $e,
+            ]);
         }
 
         return $reports;
     }
 
     /**
-     * Aggregate event dimension relationships
+     * Build the shared FROM clause for both queries
      */
-    protected function aggregateEventDimensionRelations(array &$reports, LogAggregator $logAggregator): void
+    protected function getFromClause(): array
     {
-        $select = "
-            log_action_event_category.name as eventCategory,
-            log_action_event_action.name as eventAction,
-            log_action_event_name.name as eventName,
-            log_link_visit_action.custom_float as eventValue,
-            count(distinct log_link_visit_action.idvisit) as `" . Metrics::INDEX_NB_VISITS . "`,
-            count(*) as `" . Metrics::INDEX_EVENT_NB_HITS . "`,
-            SUM(IF(log_link_visit_action.custom_float IS NOT NULL, 1, 0)) as `" . Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE . "`,
-            SUM(log_link_visit_action.custom_float) as `" . Metrics::INDEX_EVENT_SUM_EVENT_VALUE . "`
-        ";
-
-        $from = [
+        return [
             "log_link_visit_action",
             [
                 "table"      => "log_action",
@@ -126,18 +123,53 @@ class EventDimensionRelations extends RecordBuilder
                 "joinOn"     => "log_link_visit_action.idaction_name = log_action_event_name.idaction",
             ],
         ];
+    }
+
+    /**
+     * Query 1: Aggregate the 6 dimension-to-dimension reports.
+     *
+     * Groups by category, action, name only (no custom_float).
+     * Value metrics (sum, count with value) are computed as SQL aggregates.
+     */
+    protected function aggregateDimensionReports(array &$reports, LogAggregator $logAggregator): void
+    {
+        $select = "
+            log_action_event_category.name as eventCategory,
+            log_action_event_action.name as eventAction,
+            log_action_event_name.name as eventName,
+            count(distinct log_link_visit_action.idvisit) as `" . Metrics::INDEX_NB_VISITS . "`,
+            count(*) as `" . Metrics::INDEX_EVENT_NB_HITS . "`,
+            SUM(IF(log_link_visit_action.custom_float IS NOT NULL, 1, 0)) as `" . Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE . "`,
+            SUM(log_link_visit_action.custom_float) as `" . Metrics::INDEX_EVENT_SUM_EVENT_VALUE . "`
+        ";
+
+        $from = $this->getFromClause();
 
         $where = $logAggregator->getWhereStatement('log_link_visit_action', 'server_time');
         $where .= " AND log_link_visit_action.idaction_event_category IS NOT NULL";
 
         $groupBy = "log_link_visit_action.idaction_event_category,
                     log_link_visit_action.idaction_event_action,
-                    log_link_visit_action.idaction_name,
-                    log_link_visit_action.custom_float";
+                    log_link_visit_action.idaction_name";
 
         $orderBy = "`" . Metrics::INDEX_NB_VISITS . "` DESC";
 
+        // Apply ranking query if configured
+        $rankingQueryLimit = ArchivingHelper::getRankingQueryLimit();
+        $rankingQuery = null;
+        if ($rankingQueryLimit > 0) {
+            $rankingQuery = new RankingQuery($rankingQueryLimit);
+            $rankingQuery->addLabelColumn(['eventCategory', 'eventAction', 'eventName']);
+            $rankingQuery->addColumn([Metrics::INDEX_EVENT_NB_HITS, Metrics::INDEX_NB_VISITS, Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE], 'sum');
+            $rankingQuery->addColumn(Metrics::INDEX_EVENT_SUM_EVENT_VALUE, 'sum');
+        }
+
         $query = $logAggregator->generateQuery($select, $from, $where, $groupBy, $orderBy);
+
+        if ($rankingQuery) {
+            $query['sql'] = $rankingQuery->generateRankingQuery($query['sql']);
+        }
+
         $resultSet = $logAggregator->getDb()->query($query['sql'], $query['bind']);
 
         if ($resultSet === false) {
@@ -150,7 +182,67 @@ class EventDimensionRelations extends RecordBuilder
     }
 
     /**
-     * Aggregate a dimension row into all relevant reports
+     * Query 2: Aggregate the 3 value reports (Category->Values, Action->Values, Name->Values).
+     *
+     * Groups by category, action, name, AND custom_float to produce one row per
+     * distinct event value so it can be used as a subtable label.
+     */
+    protected function aggregateValueReports(array &$reports, LogAggregator $logAggregator): void
+    {
+        $select = "
+            log_action_event_category.name as eventCategory,
+            log_action_event_action.name as eventAction,
+            log_action_event_name.name as eventName,
+            log_link_visit_action.custom_float as eventValue,
+            count(distinct log_link_visit_action.idvisit) as `" . Metrics::INDEX_NB_VISITS . "`,
+            count(*) as `" . Metrics::INDEX_EVENT_NB_HITS . "`,
+            SUM(IF(log_link_visit_action.custom_float IS NOT NULL, 1, 0)) as `" . Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE . "`,
+            SUM(log_link_visit_action.custom_float) as `" . Metrics::INDEX_EVENT_SUM_EVENT_VALUE . "`
+        ";
+
+        $from = $this->getFromClause();
+
+        $where = $logAggregator->getWhereStatement('log_link_visit_action', 'server_time');
+        $where .= " AND log_link_visit_action.idaction_event_category IS NOT NULL";
+        $where .= " AND log_link_visit_action.custom_float IS NOT NULL";
+
+        $groupBy = "log_link_visit_action.idaction_event_category,
+                    log_link_visit_action.idaction_event_action,
+                    log_link_visit_action.idaction_name,
+                    log_link_visit_action.custom_float";
+
+        $orderBy = "`" . Metrics::INDEX_NB_VISITS . "` DESC";
+
+        // Apply ranking query if configured
+        $rankingQueryLimit = ArchivingHelper::getRankingQueryLimit();
+        $rankingQuery = null;
+        if ($rankingQueryLimit > 0) {
+            $rankingQuery = new RankingQuery($rankingQueryLimit);
+            $rankingQuery->addLabelColumn(['eventCategory', 'eventAction', 'eventName', 'eventValue']);
+            $rankingQuery->addColumn([Metrics::INDEX_EVENT_NB_HITS, Metrics::INDEX_NB_VISITS, Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE], 'sum');
+            $rankingQuery->addColumn(Metrics::INDEX_EVENT_SUM_EVENT_VALUE, 'sum');
+        }
+
+        $query = $logAggregator->generateQuery($select, $from, $where, $groupBy, $orderBy);
+
+        if ($rankingQuery) {
+            $query['sql'] = $rankingQuery->generateRankingQuery($query['sql']);
+        }
+
+        $resultSet = $logAggregator->getDb()->query($query['sql'], $query['bind']);
+
+        if ($resultSet === false) {
+            return;
+        }
+
+        while ($row = $resultSet->fetch()) {
+            $this->aggregateValueRow($reports, $row);
+        }
+    }
+
+    /**
+     * Aggregate a dimension row into the 6 dimension-to-dimension reports.
+     * This does NOT handle value reports.
      */
     protected function aggregateDimensionRow(array &$reports, array $row): void
     {
@@ -164,10 +256,6 @@ class EventDimensionRelations extends RecordBuilder
         $eventCategory = $row['eventCategory'] ?? '';
         $eventAction = $row['eventAction'] ?? '';
         $eventName = $row['eventName'] ?? '';
-        // Convert event value to string label (e.g., "1.5", "100", etc.)
-        $eventValue = isset($row['eventValue']) && $row['eventValue'] !== null
-            ? (string) $row['eventValue']
-            : '';
 
         // Event Category -> Event Actions
         if (!empty($eventCategory) && !empty($eventAction)) {
@@ -234,6 +322,28 @@ class EventDimensionRelations extends RecordBuilder
                 $columns
             );
         }
+    }
+
+    /**
+     * Aggregate a value row into the 3 value reports.
+     * Only handles Category->Values, Action->Values, Name->Values.
+     */
+    protected function aggregateValueRow(array &$reports, array $row): void
+    {
+        $columns = [
+            Metrics::INDEX_NB_VISITS => $row[Metrics::INDEX_NB_VISITS] ?? 0,
+            Metrics::INDEX_EVENT_NB_HITS => $row[Metrics::INDEX_EVENT_NB_HITS] ?? 0,
+            Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE => $row[Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE] ?? 0,
+            Metrics::INDEX_EVENT_SUM_EVENT_VALUE => $row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0,
+        ];
+
+        $eventCategory = $row['eventCategory'] ?? '';
+        $eventAction = $row['eventAction'] ?? '';
+        $eventName = $row['eventName'] ?? '';
+        // Convert event value to string label (e.g., "1.5", "100", etc.)
+        $eventValue = isset($row['eventValue']) && $row['eventValue'] !== null
+            ? (string) $row['eventValue']
+            : '';
 
         // Event Category -> Event Values
         if (!empty($eventCategory) && !empty($eventValue)) {

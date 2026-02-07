@@ -15,11 +15,11 @@
         "PageTitlesDocumentation": "Ce rapport affiche les titres des pages où les événements avec la valeur de dimension sélectionnée ont été déclenchés.",
         "CountriesDocumentation": "Ce rapport affiche les pays où les événements avec la valeur de dimension sélectionnée ont été déclenchés.",
         "CustomDimensionsDocumentation": "Ce rapport affiche les valeurs des dimensions personnalisées pour les événements déclenchés avec la valeur de dimension sélectionnée.",
-        "EventCategoriesEvolution": "Évolution des catégories d'événements",
+        "EventCategoriesEvolution": "Évolution des catégories d'événements (top 10)",
         "EventCategoriesEvolutionDocumentation": "Ce rapport affiche l'évolution des principales catégories d'événements dans le temps, chaque catégorie étant affichée sur une ligne distincte.",
-        "EventActionsEvolution": "Évolution des actions d'événements",
+        "EventActionsEvolution": "Évolution des actions d'événements (top 10)",
         "EventActionsEvolutionDocumentation": "Ce rapport affiche l'évolution des principales actions d'événements dans le temps, chaque action étant affichée sur une ligne distincte.",
-        "EventNamesEvolution": "Évolution des noms d'événements",
+        "EventNamesEvolution": "Évolution des noms d'événements (top 10)",
         "EventNamesEvolutionDocumentation": "Ce rapport affiche l'évolution des principaux noms d'événements dans le temps, chaque nom étant affiché sur une ligne distincte.",
         "EventsWithAllDimensions": "Événements (Toutes dimensions)",
         "EventsWithAllDimensionsDocumentation": "Ce rapport affiche tous les événements avec la catégorie, l'action et le nom affichés dans des colonnes séparées sur chaque ligne.",
@@ -28,7 +28,7 @@
         "DimensionsNoData": "Les dimensions %s n'ont pas de données pour la période sélectionnée.",
         "EventDetailsRowActionTitle": "Voir les détails de l'événement",
         "EventDetailsRowActionDescription": "Ouvrir la page d'analyses détaillées pour cet événement",
-      "PremiumLinkText": "Achetez le plugin EventsEnhanced Premium",
-      "PremiumText": "pour afficher les données du rapport :"
+        "PremiumLinkText": "Achetez le plugin EventsEnhanced Premium",
+        "PremiumText": "pour afficher les données du rapport :"
     }
 }

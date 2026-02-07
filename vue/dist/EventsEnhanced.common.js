@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("CoreHome"), require("vue"), require("CorePluginsAdmin"));
-	else if(typeof define === 'function' && define.amd)
-		define(["CoreHome", , "CorePluginsAdmin"], factory);
-	else if(typeof exports === 'object')
-		exports["EventsEnhanced"] = factory(require("CoreHome"), require("vue"), require("CorePluginsAdmin"));
-	else
-		root["EventsEnhanced"] = factory(root["CoreHome"], root["Vue"], root["CorePluginsAdmin"]);
-})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__19dc__, __WEBPACK_EXTERNAL_MODULE__8bbf__, __WEBPACK_EXTERNAL_MODULE_a5a2__) {
-return /******/ (function(modules) { // webpackBootstrap
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -110,21 +101,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ "19dc":
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__19dc__;
+module.exports = require("CoreHome");
 
 /***/ }),
 
 /***/ "8bbf":
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
+module.exports = require("vue");
 
 /***/ }),
 
 /***/ "a5a2":
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_a5a2__;
+module.exports = require("CorePluginsAdmin");
 
 /***/ }),
 
@@ -881,5 +872,4 @@ EventDetailsPagevue_type_script_lang_ts.render = render
 /***/ })
 
 /******/ });
-});
-//# sourceMappingURL=EventsEnhanced.umd.js.map
+//# sourceMappingURL=EventsEnhanced.common.js.map

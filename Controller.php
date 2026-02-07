@@ -136,6 +136,9 @@ class Controller extends \Piwik\Plugin\Controller
         $this->checkSitePermission();
 
         $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
+        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
+            $dimensionType = 'category';
+        }
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -148,7 +151,7 @@ class Controller extends \Piwik\Plugin\Controller
         $view->requestConfig->request_parameters_to_modify['dimensionValue'] = $dimensionValue;
 
         $view->config->title = Piwik::translate('Actions_PageUrls');
-        $this->configureEventHitsTable($view);
+        $this->configureEventDimensionTable($view);
 
         return $this->renderView($view);
     }
@@ -161,6 +164,9 @@ class Controller extends \Piwik\Plugin\Controller
         $this->checkSitePermission();
 
         $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
+        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
+            $dimensionType = 'category';
+        }
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -173,7 +179,7 @@ class Controller extends \Piwik\Plugin\Controller
         $view->requestConfig->request_parameters_to_modify['dimensionValue'] = $dimensionValue;
 
         $view->config->title = Piwik::translate('Actions_WidgetPageTitles');
-        $this->configureEventHitsTable($view);
+        $this->configureEventDimensionTable($view);
 
         return $this->renderView($view);
     }
@@ -186,6 +192,9 @@ class Controller extends \Piwik\Plugin\Controller
         $this->checkSitePermission();
 
         $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
+        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
+            $dimensionType = 'category';
+        }
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -198,7 +207,7 @@ class Controller extends \Piwik\Plugin\Controller
         $view->requestConfig->request_parameters_to_modify['dimensionValue'] = $dimensionValue;
 
         $view->config->title = Piwik::translate('UserCountry_Country');
-        $this->configureEventHitsTable($view);
+        $this->configureEventDimensionTable($view);
 
         return $this->renderView($view);
     }
@@ -418,6 +427,9 @@ class Controller extends \Piwik\Plugin\Controller
         $this->checkSitePermission();
 
         $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
+        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
+            $dimensionType = 'category';
+        }
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
         $apiMethod = $this->getEventsApiMethod($dimensionType);
 
@@ -455,6 +467,11 @@ class Controller extends \Piwik\Plugin\Controller
         $view->config->addTranslation('min_event_value', Piwik::translate('Events_MinValue'));
         $view->config->addTranslation('max_event_value', Piwik::translate('Events_MaxValue'));
         $view->config->addTranslation('avg_event_value', Piwik::translate('Events_AvgValue'));
+
+        // Remove the ProfessionalServices promo footer injected by native Events report
+        $view->config->filters[] = function () use ($view) {
+            $view->config->show_footer_message = '';
+        };
 
         return $this->renderView($view);
     }
@@ -576,6 +593,11 @@ class Controller extends \Piwik\Plugin\Controller
      */
     private function configureEvolutionGraph($view)
     {
+        // Limit the number of series to prevent browser overload with high cardinality
+        $view->requestConfig->filter_sort_column = 'nb_events';
+        $view->requestConfig->filter_sort_order = 'desc';
+        $view->requestConfig->filter_limit = 10;
+
         // Configure metrics to display: 5 metrics in specific order
         $selectableColumns = ['nb_events', 'nb_visits', 'nb_uniq_visitors', 'sum_event_value'];
         $view->config->selectable_columns = $selectableColumns;
@@ -622,8 +644,10 @@ class Controller extends \Piwik\Plugin\Controller
         $view->config->addTranslation('nb_events', Piwik::translate('Events_TotalEvents'));
         $view->config->addTranslation('nb_visits', Piwik::translate('General_ColumnNbVisits'));
 
-        // Show totals row option in UI (user can enable it)
-        $view->config->show_totals_row = true;
+        // Show totals row option in UI (only for visualizations that support it)
+        if (property_exists($view->config, 'show_totals_row')) {
+            $view->config->show_totals_row = true;
+        }
 
         // Sort by nb_events by default
         $view->requestConfig->filter_sort_column = 'nb_events';
@@ -638,39 +662,4 @@ class Controller extends \Piwik\Plugin\Controller
         $view->config->show_goals = false;
     }
 
-    /**
-     * Configure table view for page/country/custom dimension reports
-     * Used for: Page URLs, Page Titles, Countries, Custom Dimensions
-     * Available metrics: nb_events, nb_visits (event-based reports, not pageviews)
-     */
-    private function configureEventHitsTable($view)
-    {
-        // Disable "display table with engagement metrics" option
-        $view->config->show_table_all_columns = false;
-
-        // Set default columns: Total Events and Visits only
-        $view->config->columns_to_display = ['label', 'nb_events', 'nb_visits'];
-
-        // Enable selectable columns for bar/pie chart visualizations
-        $view->config->selectable_columns = ['nb_events', 'nb_visits'];
-
-        // Add translations
-        $view->config->addTranslation('nb_events', Piwik::translate('Events_TotalEvents'));
-        $view->config->addTranslation('nb_visits', Piwik::translate('General_ColumnNbVisits'));
-
-        // Show totals row option in UI (user can enable it)
-        $view->config->show_totals_row = true;
-
-        // Sort by nb_events by default
-        $view->requestConfig->filter_sort_column = 'nb_events';
-        $view->requestConfig->filter_sort_order = 'desc';
-
-        // Enable visualization switching
-        $view->config->show_all_views_icons = true;
-        $view->config->show_bar_chart = true;
-        $view->config->show_pie_chart = true;
-
-        // Disable goals
-        $view->config->show_goals = false;
-    }
 }

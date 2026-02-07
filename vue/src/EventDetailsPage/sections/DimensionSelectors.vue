@@ -1,5 +1,5 @@
 <template>
-  <div class="eventsEnhanced-selectors" style="margin-bottom: 20px;">
+  <div class="eventsEnhanced-selectors">
     <div class="row">
       <div class="col s12 m3">
         <Field

@@ -99,9 +99,14 @@ class GetEventsWithAllDimensions extends EventsBase
         }
     }
 
+    protected function configureFooterMessage(ViewDataTable $view)
+    {
+        // Do not show the ProfessionalServices promo footer from Events Base
+    }
+
     public function configureView(ViewDataTable $view)
     {
-        // Call parent to get native Events behavior (selectable_columns, footer message, etc.)
+        // Call parent to get native Events behavior (selectable_columns, etc.)
         parent::configureView($view);
 
         // Disable engagement metrics - this is event scope, not visit scope
@@ -148,8 +153,10 @@ class GetEventsWithAllDimensions extends EventsBase
             $view->config->custom_parameters['show_dimensions'] = 1;
         }
 
-        // Show totals row option in UI (user can enable it)
-        $view->config->show_totals_row = true;
+        // Show totals row option in UI (only for visualizations that support it)
+        if (property_exists($view->config, 'show_totals_row')) {
+            $view->config->show_totals_row = true;
+        }
 
         // Enable visualization switching
         $view->config->show_all_views_icons = true;
