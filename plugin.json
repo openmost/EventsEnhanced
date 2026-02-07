@@ -1,7 +1,7 @@
 {
   "name": "EventsEnhanced",
   "description": "Add event-based report and event details view",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "theme": false,
   "require": {
     "matomo": ">=5.0.0,<6.0.0-b1"
@@ -33,5 +33,5 @@
     "amélioré",
     "mieux"
   ],
-  "category": "analytics"
+  "category": "database"
 }
