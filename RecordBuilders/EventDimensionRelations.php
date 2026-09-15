@@ -341,7 +341,7 @@ class EventDimensionRelations extends RecordBuilder
         $eventAction = $row['eventAction'] ?? '';
         $eventName = $row['eventName'] ?? '';
         // Convert event value to string label (e.g., "1.5", "100", etc.)
-        $eventValue = isset($row['eventValue']) && $row['eventValue'] !== null
+        $eventValue = isset($row['eventValue'])
             ? (string) $row['eventValue']
             : '';
 

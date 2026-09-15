@@ -9,8 +9,8 @@ EventsEnhanced extends Matomo's native Events reports by adding detailed dimensi
 - **Detail Pages**: Click on any event dimension value (category, action, or name) to open a dedicated detail page
 - **Evolution Graph**: View how the event dimension value trends over time
 - **Related Dimension Reports**: See breakdowns by other event dimensions
-- **Page Context ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: View which page URLs and page titles triggered events with the selected dimension value
-- **Custom Dimensions ([premium](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: If you have Custom Dimensions configured with action scope, see their values for events with the selected dimension value
+- **Page Context ([premium](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: View which page URLs and page titles triggered events with the selected dimension value
+- **Custom Dimensions ([premium](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced))**: If you have Custom Dimensions configured with action scope, see their values for events with the selected dimension value
 
 ### How to Use
 
@@ -21,7 +21,9 @@ EventsEnhanced extends Matomo's native Events reports by adding detailed dimensi
 
 ### Requirements
 
-- Matomo 5.0.0 or later
+- Matomo 6.x
+- PHP 8.1 or higher
+- MySQL 8.0+ or MariaDB 10.6+
 - Events plugin (included in Matomo core)
 - Optional for premium: CustomDimensions plugin for custom dimension reports
 
@@ -31,7 +33,7 @@ EventsEnhanced extends Matomo's native Events reports by adding detailed dimensi
 2. Go to Administration > Plugins
 3. Activate the EventsEnhanced plugin
 
-[Purchase EventsEnhanced Premium version](https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced)
+[Purchase EventsEnhanced Premium version](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced_documentation&utm_campaign=plugin_premium_events_enhanced)
 
 ### License
 

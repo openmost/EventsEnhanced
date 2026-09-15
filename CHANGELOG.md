@@ -1,5 +1,17 @@
 ## Changelog
 
+### v6.0.0
+
+- Compatibility with Matomo 6.x (`>=6.0.0-b1,<7.0.0-b1`)
+- Requires PHP 8.1+ and MySQL 8.0+ or MariaDB 10.6+
+- The dimension values endpoint declares its JSON response with `#[JsonResponse]`
+- Remove `getThirdLevelTableDimension()`, Matomo 6 only uses `getNthLevelTableDimension()`
+- Single focus outline on the event dimension and value selectors (Matomo 6 select control)
+- Vue library rebuilt with the Matomo 6 build, only the minified bundle is committed
+- Premium teaser follows the Matomo theme, including dark mode
+- Update plugin homepage URL, support email and documentation
+- Remove `.DS_Store` files
+
 ### v1.1.0
 
 #### New features

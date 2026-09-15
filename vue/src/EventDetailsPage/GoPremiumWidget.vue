@@ -50,7 +50,7 @@ export default defineComponent({
     },
     link: {
       type: String,
-      default: 'https://openmost.io/products/events-enhanced/?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced&utm_campaign=plugin_premium_events_enhanced',
+      default: 'https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced&utm_campaign=plugin_premium_events_enhanced',
     },
     image: {
       type: String,
@@ -125,7 +125,6 @@ export default defineComponent({
 .omeh-premium-link-wrapper .omeh-premium-link {
   position: relative;
   border-radius: 8px;
-  background: #FFF;
   box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.05);
   padding: 1rem;
   text-align: center;

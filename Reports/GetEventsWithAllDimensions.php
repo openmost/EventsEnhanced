@@ -72,14 +72,6 @@ class GetEventsWithAllDimensions extends EventsBase
     }
 
     /**
-     * Get the third level dimension (EventName)
-     */
-    public function getThirdLevelTableDimension()
-    {
-        return new EventName();
-    }
-
-    /**
      * Get the dimension for the nth level subtable (as used by Flattener)
      * The Flattener passes $level as the current recursion depth.
      * When at level N, it's processing rows and needs the dimension for the subtable.

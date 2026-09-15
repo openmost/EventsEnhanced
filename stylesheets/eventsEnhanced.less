@@ -17,8 +17,20 @@
 .eventsEnhanced-selectors {
   margin-bottom: 20px;
 
+  // Matomo draws a focus ring on the input inside the wrapper border that already turns blue on focus,
+  // which reads as a double outline: keep the wrapper border only
+  .matomo-field-select .select-wrapper input.select-dropdown:focus-visible {
+    outline: none;
+  }
+
   .form-group {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
+}
+
+/* Premium teaser card follows the Matomo theme (light and dark mode) */
+.omeh-premium-link-wrapper .omeh-premium-link {
+  background: @theme-color-background-contrast;
+  color: @theme-color-text;
 }

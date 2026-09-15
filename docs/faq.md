@@ -18,3 +18,7 @@ Yes, any segment applied in the main Matomo interface will also apply to the det
 **Does this plugin require any special permissions?**
 
 No, the plugin uses the same view permissions as the standard Events reports. If a user can view Events reports, they can access EventsEnhanced detail pages.
+
+**Which versions of Matomo are supported?**
+
+Version 6.x of the plugin supports Matomo 6 (PHP 8.1+, MySQL 8.0+ or MariaDB 10.6+). Use the 1.x versions of the plugin for Matomo 5.

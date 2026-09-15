@@ -10,6 +10,7 @@
 namespace Piwik\Plugins\EventsEnhanced;
 
 use Piwik\Common;
+use Piwik\Http\JsonResponse;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomDimensions\API as CustomDimensionsAPI;
 use Piwik\Plugins\CustomDimensions\CustomDimensions;
@@ -516,7 +517,8 @@ class Controller extends \Piwik\Plugin\Controller
      * AJAX endpoint to get dimension values for a specific dimension type
      * Returns JSON with dimension values
      */
-    public function getDimensionValues()
+    #[JsonResponse]
+    public function getDimensionValues(): string
     {
         $this->checkSitePermission();
 
@@ -527,7 +529,7 @@ class Controller extends \Piwik\Plugin\Controller
 
         $values = $this->fetchDimensionValues($dimensionType);
 
-        return json_encode($values);
+        return json_encode($values, JSON_INVALID_UTF8_SUBSTITUTE) ?: '[]';
     }
 
     /**
