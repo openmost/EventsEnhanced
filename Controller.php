@@ -117,9 +117,12 @@ class Controller extends \Piwik\Plugin\Controller
                 $label = $row->getColumn('label');
                 $nbEvents = $row->getColumn('nb_events');
                 if ($label && $label !== '-') {
+                    // Stored labels are HTML-escaped: the selector escapes its text again, and the
+                    // selected value read from the URL is always unescaped (see getDimensionValueFromRequest()).
+                    $value = Common::unsanitizeInputValue($label);
                     $values[] = [
-                        'key' => $label,
-                        'value' => $label . ' (' . $nbEvents . ')',
+                        'key' => $value,
+                        'value' => $value . ' (' . $nbEvents . ')',
                     ];
                 }
             }

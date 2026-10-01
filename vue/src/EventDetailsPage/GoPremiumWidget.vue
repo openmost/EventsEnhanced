@@ -10,7 +10,7 @@
       <slot>
         <div class="omeh-premium-report-image-wrapper">
           <img class="omeh-premium-report-image"
-               :src="`${matomoBaseUrl}plugins/EventsEnhanced/images/${image}.jpg`"
+               :src="imageUrl"
                alt="Blurred premium report"
                :width="imageWidth"
                :height="imageHeight"
@@ -39,8 +39,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   computed: {
-    matomoBaseUrl(): string {
-      return (window as any).Matomo?.piwikUrl || '/';
+    // Relative to index.php, so it also works when Matomo is installed in a sub directory
+    imageUrl(): string {
+      return `plugins/EventsEnhanced/images/${this.image}.jpg`;
     },
   },
   props: {
@@ -50,7 +51,7 @@ export default defineComponent({
     },
     link: {
       type: String,
-      default: 'https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_installed_plugin&utm_medium=plugin_events_enhanced&utm_campaign=plugin_premium_events_enhanced',
+      default: 'https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_onpremise&utm_medium=plugin&utm_campaign=premium_upgrade&utm_content=eventsenhanced',
     },
     image: {
       type: String,

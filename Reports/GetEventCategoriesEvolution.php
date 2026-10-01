@@ -29,7 +29,9 @@ class GetEventCategoriesEvolution extends Report
         $this->name = Piwik::translate('EventsEnhanced_EventCategoriesEvolution');
         $this->documentation = Piwik::translate('EventsEnhanced_EventCategoriesEvolutionDocumentation');
 
-        // No category - only accessible via Related Reports
+        // A category without subcategory keeps the report out of the menus and widgets, reachable only from Related
+        // Reports, while the report metadata stays complete for API consumers such as McpServer
+        $this->categoryId = 'General_Actions';
         $this->order = 2;
 
         // Set dimension for row evolution support
