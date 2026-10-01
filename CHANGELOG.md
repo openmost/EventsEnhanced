@@ -1,5 +1,18 @@
 ## Changelog
 
+### v5.1.0
+
+- Fix: event categories, actions and names with an apostrophe or another special character are shown as is in the Event value selector, they were escaped twice (`d&#039;un` instead of `d'un`). Their detail page no longer lists the value twice in the selector, and its reports now find their data.
+- Data quality fixes in the archived reports. Events without a name are now counted under "Event Name not defined" in every breakdown, they were dropped from the reports by event name and from the event names of the category and action pages, so these lists added up to less than the event total. The event value 0 is no longer dropped from the event value reports. Event value sums are rounded like in the core Events reports. The "Others" row of a truncated list stays an "Others" row on the detail pages instead of a row labelled -1. A failed archiving query now fails the archive, so it is retried, instead of storing an incomplete report.
+- Existing installs must invalidate and re-archive past periods to get the corrected numbers: `./console core:invalidate-report-data --sites=1 --dates=2025-01-01,2025-12-31 --plugin=EventsEnhanced` then `./console core:archive`. Keep the default periods: a month is built from its week archives, a week archived before the plugin was active has no data for the plugin and makes the month incomplete.
+- The version number now follows the Matomo major version (5.x for Matomo 5).
+- The Event Categories and Event Actions evolution reports now declare a report category, so their metadata is complete for API and AI clients such as the McpServer plugin. They still only appear from the Related Reports links.
+- Premium report previews load their images relative to Matomo, fixing broken images when Matomo is installed in a sub directory
+- Translated into 12 languages
+- Plugin homepage, support email and documentation moved to openmost.com
+- The Premium links of the documentation and of the report previews open the EventsEnhanced page of openmost.com, the version notes follow the new 5.x / 6.x numbering
+- Shorter Marketplace description that fits the plugin cards, and campaign parameters on the Openmost links of the README.
+
 ### v1.1.0
 
 #### New features
@@ -9,10 +22,10 @@
 - add: Vue shims and TypeScript configuration for reliable builds
 
 #### Improvements
-- update: API layer refactored — 9 near-identical methods consolidated into a single `getSubtableForDimension()` helper
-- update: Controller refactored — merged duplicate table configuration methods into `configureEventDimensionTable()`
+- update: API layer refactored, 9 near-identical methods consolidated into a single `getSubtableForDimension()` helper
+- update: Controller refactored, merged duplicate table configuration methods into `configureEventDimensionTable()`
 - update: Added input validation for `dimensionType` parameter across all controller actions
-- update: RecordBuilder `EventDimensionRelations` split into 2 optimized SQL queries — dimension reports no longer include `custom_float` in GROUP BY, fixing inflated visit counts
+- update: RecordBuilder `EventDimensionRelations` split into 2 optimized SQL queries, dimension reports no longer include `custom_float` in GROUP BY, fixing inflated visit counts
 - update: Added RankingQuery support to both RecordBuilders for large dataset handling
 - update: Removed premature `round()` during archiving in `EventsAllDimensions` to preserve full value precision
 - update: Removed `Common::getRequestVar()` calls from Report `init()` methods (constructors should not access HTTP request)

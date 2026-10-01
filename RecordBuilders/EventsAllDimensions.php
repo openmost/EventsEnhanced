@@ -153,16 +153,16 @@ class EventsAllDimensions extends RecordBuilder
      */
     protected function aggregateEventRow(DataTable $record, array $row): void
     {
-        $category = $row['eventCategory'] ?? '';
-        $action = $row['eventAction'] ?? '';
-        $name = $row['eventName'] ?? '';
+        // "0" is a valid label, so empty() must not be used on labels
+        $category = (string) ($row['eventCategory'] ?? '');
+        $action = (string) ($row['eventAction'] ?? '');
+        $name = (string) ($row['eventName'] ?? '');
 
-        if (empty($category)) {
+        if ($category === '') {
             return;
         }
 
-        // Handle empty event name
-        if (empty($name)) {
+        if ($name === '') {
             $name = EventsArchiver::EVENT_NAME_NOT_SET;
         }
 
@@ -171,16 +171,17 @@ class EventsAllDimensions extends RecordBuilder
             Metrics::INDEX_NB_VISITS                => $row[Metrics::INDEX_NB_VISITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS            => $row[Metrics::INDEX_EVENT_NB_HITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE => $row[Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE] ?? 0,
-            Metrics::INDEX_EVENT_SUM_EVENT_VALUE    => $row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0,
-            Metrics::INDEX_EVENT_MIN_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE] ?? null) ? (float) $row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE] : false,
-            Metrics::INDEX_EVENT_MAX_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE] ?? null) ? (float) $row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE] : false,
+            // Same rounding as core Events, so the totals match Events.getCategory and friends
+            Metrics::INDEX_EVENT_SUM_EVENT_VALUE    => round((float) ($row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0), 2),
+            Metrics::INDEX_EVENT_MIN_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE] ?? null) ? round((float) $row[Metrics::INDEX_EVENT_MIN_EVENT_VALUE], 2) : false,
+            Metrics::INDEX_EVENT_MAX_EVENT_VALUE    => is_numeric($row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE] ?? null) ? round((float) $row[Metrics::INDEX_EVENT_MAX_EVENT_VALUE], 2) : false,
         ];
 
         // Level 1: Sum to Category row
         $categoryRow = $record->sumRowWithLabel($category, $columns, $this->columnAggregationOps);
 
         // Level 2: Sum to Action subtable (under Category)
-        if (!empty($action)) {
+        if ($action !== '') {
             $actionRow = $categoryRow->sumRowWithLabelToSubtable($action, $columns, $this->columnAggregationOps);
 
             // Level 3: Sum to Name subtable (under Action)

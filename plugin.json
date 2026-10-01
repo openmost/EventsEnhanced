@@ -1,7 +1,7 @@
 {
   "name": "EventsEnhanced",
-  "description": "Add event-based report and event details view",
-  "version": "1.1.1",
+  "description": "A detail page for every event category, action and name, with its evolution and related breakdowns.",
+  "version": "5.1.0",
   "theme": false,
   "require": {
     "matomo": ">=5.0.0,<6.0.0-b1"
@@ -12,25 +12,28 @@
   "authors": [
     {
       "name": "Openmost",
-      "email": "ronan@openmost.io",
-      "homepage": "https:\/\/openmost.io"
+      "email": "ronan@openmost.com",
+      "homepage": "https://openmost.com"
     }
   ],
   "support": {
-    "email": "ronan@openmost.io",
-    "issues": "https:\/\/github.com\/openmost\/EventsEnhanced\/issues",
-    "source": "https:\/\/github.com\/openmost\/EventsEnhanced"
+    "email": "ronan@openmost.com",
+    "issues": "https://github.com/openmost/EventsEnhanced/issues",
+    "source": "https://github.com/openmost/EventsEnhanced"
   },
-  "homepage": "https:\/\/openmost.io\/products\/events-enhanced\/",
+  "homepage": "https://openmost.com/matomo/extensions/events-enhanced",
+  "preview": {
+    "video_url": "https://www.youtube-nocookie.com/embed/QYSrh1gDS9g"
+  },
   "license": "GPL v3+",
   "keywords": [
-    "événement",
-    "événements",
+    "evenement",
+    "evenements",
     "event",
     "events",
     "enhanced",
     "better",
-    "amélioré",
+    "ameliore",
     "mieux"
   ],
   "category": "database"

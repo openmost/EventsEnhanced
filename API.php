@@ -15,6 +15,7 @@ use Piwik\Container\StaticContainer;
 use Piwik\DataTable;
 use Piwik\Metrics;
 use Piwik\Piwik;
+use Piwik\Plugins\Events\Archiver as EventsArchiver;
 use Piwik\Plugins\CustomDimensions\API as CustomDimensionsAPI;
 use Piwik\Plugins\CustomDimensions\CustomDimensions;
 use Psr\Log\LoggerInterface;
@@ -265,6 +266,7 @@ class API extends \Piwik\Plugin\API
 
             $this->filterAndFlattenToSubtable($dataTable, $dimensionValue);
 
+            $dataTable->filter('Piwik\Plugins\Events\DataTable\Filter\ReplaceEventNameNotSet');
             $dataTable->queueFilter('ReplaceColumnNames');
             return $dataTable;
         } catch (\Exception $e) {
@@ -299,22 +301,59 @@ class API extends \Piwik\Plugin\API
      */
     private function extractSubtableByLabel(DataTable $table, string $label): void
     {
-        $row = $table->getRowFromLabel($label);
+        $row = $this->getRowFromDimensionLabel($table, $label);
+        $subtable = $row ? $row->getSubtable() : null;
 
-        if ($row) {
-            $subtable = $row->getSubtable();
-            if ($subtable) {
-                // Clear the table and add rows from subtable
-                $table->deleteRowsOffset(0);
-                foreach ($subtable->getRows() as $subRow) {
-                    $table->addRow($subRow);
-                }
-                return;
-            }
+        $this->replaceRows($table, $subtable ?: null);
+    }
+
+    /**
+     * Archived labels keep the HTML escaping of the tracked values (d&#039;un), the API methods
+     * receive them unescaped (d'un).
+     */
+    private function getRowFromArchivedLabel(DataTable $table, string $label)
+    {
+        return $table->getRowFromLabel($label) ?: $table->getRowFromLabel(Common::sanitizeInputValue($label));
+    }
+
+    /**
+     * The detail page receives the translated "not defined" label of the core Events reports,
+     * the archive stores the core EVENT_NAME_NOT_SET constant.
+     */
+    private function getRowFromDimensionLabel(DataTable $table, string $label)
+    {
+        $row = $this->getRowFromArchivedLabel($table, $label);
+
+        if (!$row && $label === Piwik::translate('General_NotDefined', Piwik::translate('Events_EventName'))) {
+            $row = $table->getRowFromLabel(EventsArchiver::EVENT_NAME_NOT_SET);
         }
 
-        // No matching row or subtable found, return empty table
+        return $row;
+    }
+
+    /**
+     * Replaces the rows of the table by the rows of the source, keeping the "Others" row a summary row
+     * so it is still displayed as "Others" and not as a row labelled -1.
+     */
+    private function replaceRows(DataTable $table, ?DataTable $source): void
+    {
         $table->deleteRowsOffset(0);
+
+        if (!$source) {
+            return;
+        }
+
+        foreach ($source->getRowsWithoutSummaryRow() as $row) {
+            $table->addRow($row);
+        }
+
+        $summaryRow = $source->getSummaryRow();
+        if ($summaryRow) {
+            $table->addSummaryRow($summaryRow);
+        }
+
+        // deleteRowsOffset() keeps the label index of the removed rows, later label lookups would hit them
+        $table->rebuildIndex();
     }
 
     /**

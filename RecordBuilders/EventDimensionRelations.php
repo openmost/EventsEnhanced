@@ -13,14 +13,13 @@ use Piwik\ArchiveProcessor;
 use Piwik\ArchiveProcessor\Record;
 use Piwik\ArchiveProcessor\RecordBuilder;
 use Piwik\Config\GeneralConfig;
-use Piwik\Container\StaticContainer;
 use Piwik\DataAccess\LogAggregator;
 use Piwik\DataTable;
 use Piwik\Metrics;
+use Piwik\Plugins\Events\Archiver as EventsArchiver;
 use Piwik\Plugins\Actions\ArchivingHelper;
 use Piwik\Plugins\EventsEnhanced\Archiver;
 use Piwik\RankingQuery;
-use Psr\Log\LoggerInterface;
 
 /**
  * RecordBuilder for event dimension-to-dimension relationships
@@ -87,15 +86,8 @@ class EventDimensionRelations extends RecordBuilder
             Archiver::RECORD_EVENT_NAME_VALUES => new DataTable(),
         ];
 
-        try {
-            $this->aggregateDimensionReports($reports, $logAggregator);
-            $this->aggregateValueReports($reports, $logAggregator);
-        } catch (\Exception $e) {
-            $logger = StaticContainer::get(LoggerInterface::class);
-            $logger->error('EventsEnhanced: Failed to aggregate event dimension relations: {exception}', [
-                'exception' => $e,
-            ]);
-        }
+        $this->aggregateDimensionReports($reports, $logAggregator);
+        $this->aggregateValueReports($reports, $logAggregator);
 
         return $reports;
     }
@@ -246,81 +238,23 @@ class EventDimensionRelations extends RecordBuilder
      */
     protected function aggregateDimensionRow(array &$reports, array $row): void
     {
-        $columns = [
-            Metrics::INDEX_NB_VISITS => $row[Metrics::INDEX_NB_VISITS] ?? 0,
-            Metrics::INDEX_EVENT_NB_HITS => $row[Metrics::INDEX_EVENT_NB_HITS] ?? 0,
-            Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE => $row[Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE] ?? 0,
-            Metrics::INDEX_EVENT_SUM_EVENT_VALUE => $row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0,
+        $columns = $this->getColumns($row);
+
+        $eventCategory = $this->getLabel($row, 'eventCategory');
+        $eventAction = $this->getLabel($row, 'eventAction');
+        $eventName = $this->getEventNameLabel($row);
+
+        $relations = [
+            Archiver::RECORD_EVENT_CATEGORY_ACTIONS => [$eventCategory, $eventAction],
+            Archiver::RECORD_EVENT_CATEGORY_NAMES => [$eventCategory, $eventName],
+            Archiver::RECORD_EVENT_ACTION_CATEGORIES => [$eventAction, $eventCategory],
+            Archiver::RECORD_EVENT_ACTION_NAMES => [$eventAction, $eventName],
+            Archiver::RECORD_EVENT_NAME_CATEGORIES => [$eventName, $eventCategory],
+            Archiver::RECORD_EVENT_NAME_ACTIONS => [$eventName, $eventAction],
         ];
 
-        $eventCategory = $row['eventCategory'] ?? '';
-        $eventAction = $row['eventAction'] ?? '';
-        $eventName = $row['eventName'] ?? '';
-
-        // Event Category -> Event Actions
-        if (!empty($eventCategory) && !empty($eventAction)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_CATEGORY_ACTIONS,
-                $eventCategory,
-                $eventAction,
-                $columns
-            );
-        }
-
-        // Event Category -> Event Names
-        if (!empty($eventCategory) && !empty($eventName)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_CATEGORY_NAMES,
-                $eventCategory,
-                $eventName,
-                $columns
-            );
-        }
-
-        // Event Action -> Event Categories
-        if (!empty($eventAction) && !empty($eventCategory)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_ACTION_CATEGORIES,
-                $eventAction,
-                $eventCategory,
-                $columns
-            );
-        }
-
-        // Event Action -> Event Names
-        if (!empty($eventAction) && !empty($eventName)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_ACTION_NAMES,
-                $eventAction,
-                $eventName,
-                $columns
-            );
-        }
-
-        // Event Name -> Event Categories
-        if (!empty($eventName) && !empty($eventCategory)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_NAME_CATEGORIES,
-                $eventName,
-                $eventCategory,
-                $columns
-            );
-        }
-
-        // Event Name -> Event Actions
-        if (!empty($eventName) && !empty($eventAction)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_NAME_ACTIONS,
-                $eventName,
-                $eventAction,
-                $columns
-            );
+        foreach ($relations as $recordName => [$mainLabel, $subLabel]) {
+            $this->addToReport($reports, $recordName, $mainLabel, $subLabel, $columns);
         }
     }
 
@@ -330,61 +264,60 @@ class EventDimensionRelations extends RecordBuilder
      */
     protected function aggregateValueRow(array &$reports, array $row): void
     {
-        $columns = [
+        $columns = $this->getColumns($row);
+
+        // The value is the label of the subtable, 0 is a real value and must be kept
+        $eventValue = $this->getLabel($row, 'eventValue');
+
+        $relations = [
+            Archiver::RECORD_EVENT_CATEGORY_VALUES => $this->getLabel($row, 'eventCategory'),
+            Archiver::RECORD_EVENT_ACTION_VALUES => $this->getLabel($row, 'eventAction'),
+            Archiver::RECORD_EVENT_NAME_VALUES => $this->getEventNameLabel($row),
+        ];
+
+        foreach ($relations as $recordName => $mainLabel) {
+            $this->addToReport($reports, $recordName, $mainLabel, $eventValue, $columns);
+        }
+    }
+
+    protected function getColumns(array $row): array
+    {
+        return [
             Metrics::INDEX_NB_VISITS => $row[Metrics::INDEX_NB_VISITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS => $row[Metrics::INDEX_EVENT_NB_HITS] ?? 0,
             Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE => $row[Metrics::INDEX_EVENT_NB_HITS_WITH_VALUE] ?? 0,
-            Metrics::INDEX_EVENT_SUM_EVENT_VALUE => $row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0,
+            // Same rounding as core Events, so the totals match Events.getCategory and friends
+            Metrics::INDEX_EVENT_SUM_EVENT_VALUE => round((float) ($row[Metrics::INDEX_EVENT_SUM_EVENT_VALUE] ?? 0), 2),
         ];
+    }
 
-        $eventCategory = $row['eventCategory'] ?? '';
-        $eventAction = $row['eventAction'] ?? '';
-        $eventName = $row['eventName'] ?? '';
-        // Convert event value to string label (e.g., "1.5", "100", etc.)
-        $eventValue = isset($row['eventValue']) && $row['eventValue'] !== null
-            ? (string) $row['eventValue']
-            : '';
-
-        // Event Category -> Event Values
-        if (!empty($eventCategory) && !empty($eventValue)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_CATEGORY_VALUES,
-                $eventCategory,
-                $eventValue,
-                $columns
-            );
+    /**
+     * Returns null when the label is missing. "0" is a valid label, so empty() must not be used.
+     */
+    protected function getLabel(array $row, string $column): ?string
+    {
+        if (!isset($row[$column]) || $row[$column] === '') {
+            return null;
         }
 
-        // Event Action -> Event Values
-        if (!empty($eventAction) && !empty($eventValue)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_ACTION_VALUES,
-                $eventAction,
-                $eventValue,
-                $columns
-            );
-        }
+        return (string) $row[$column];
+    }
 
-        // Event Name -> Event Values
-        if (!empty($eventName) && !empty($eventValue)) {
-            $this->addToReport(
-                $reports,
-                Archiver::RECORD_EVENT_NAME_VALUES,
-                $eventName,
-                $eventValue,
-                $columns
-            );
-        }
+    /**
+     * The event name is optional: events without one are grouped under the core "not set" label
+     * instead of being dropped, like in the core Events reports.
+     */
+    protected function getEventNameLabel(array $row): string
+    {
+        return $this->getLabel($row, 'eventName') ?? EventsArchiver::EVENT_NAME_NOT_SET;
     }
 
     /**
      * Add data to a report with main label and subtable label
      */
-    protected function addToReport(array &$reports, string $recordName, string $mainLabel, string $subLabel, array $columns): void
+    protected function addToReport(array &$reports, string $recordName, ?string $mainLabel, ?string $subLabel, array $columns): void
     {
-        if (empty($mainLabel) || empty($subLabel)) {
+        if ($mainLabel === null || $subLabel === null) {
             return;
         }
 
