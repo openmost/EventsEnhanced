@@ -23,7 +23,7 @@ Turn Matomo's Events reports into a navigable analysis: open a detail page for a
 
 ## Requirements
 
-- Matomo 5.x (5.10.0 or later, below 6.0.0)
+- Matomo 5.x (5.0.0 or later, below 6.0.0)
 - The Events plugin (bundled with Matomo and enabled by default).
 
 ## Installation / Configuration

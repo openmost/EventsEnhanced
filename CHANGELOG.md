@@ -12,7 +12,7 @@
 - Plugin homepage, support email and documentation moved to openmost.com
 - The Premium links of the documentation and of the report previews open the EventsEnhanced page of openmost.com, the version notes follow the new 5.x / 6.x numbering
 - Shorter Marketplace description that fits the plugin cards, and campaign parameters on the Openmost links of the README.
-- Requires Matomo 5.10.0 or later: the Openmost banner styles rely on the theme color variables introduced in Matomo 5.10.0.
+- Requires Matomo 5.0.0 or later (`>=5.0.0,<6.0.0-b1`): the Openmost banner styles fall back to the Matomo light theme colors when the theme color variables of Matomo 5.10.0 are not available.
 - Smaller package: the Vue build artifacts that Matomo does not load (source maps, CommonJS bundle) are no longer shipped.
 
 ### v1.1.0

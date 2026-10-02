@@ -33,4 +33,4 @@ No. Anyone who can view the Events reports of a site can open its detail pages.
 
 **Which versions of Matomo are supported?**
 
-Version 5.x of the plugin supports Matomo 5 (5.10.0 or later). Use the 6.x versions for Matomo 6.
+Version 5.x of the plugin supports Matomo 5 (5.0.0 or later). Use the 6.x versions for Matomo 6.
