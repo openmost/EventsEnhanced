@@ -1,8 +1,10 @@
 # EventsEnhanced
 
+## Description
+
 Turn Matomo's Events reports into a navigable analysis: open a detail page for any event category, action or name and see how it evolves and what it is combined with.
 
-## Features
+### Features
 
 - **Event detail pages**: a "View Event Details" row action on the Events reports (Categories, Actions, Names) opens a dedicated page for the selected value. Selectors at the top of the page let you switch the dimension (category, action, name) and the value without going back to the report.
 - **Evolution graph** of the selected value over time, with a metric picker (events, visits, event value, events with a value).
@@ -13,7 +15,7 @@ Turn Matomo's Events reports into a navigable analysis: open a detail page for a
 - Segments, periods and the standard view permission of the Events reports apply everywhere.
 - Translated into 12 languages.
 
-### Premium version
+#### Premium version
 
 [EventsEnhanced Premium](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_marketplace&utm_medium=referral&utm_campaign=premium_upgrade&utm_content=eventsenhanced) adds three reports to every detail page, shown as previews in the free version:
 
@@ -21,12 +23,12 @@ Turn Matomo's Events reports into a navigable analysis: open a detail page for a
 - **Countries** of the visitors who triggered them.
 - **Custom Dimensions**: values of your action-scoped Custom Dimensions for the selected events.
 
-## Requirements
+### Requirements
 
 - Matomo 5.x (5.0.0 or later, below 6.0.0)
 - The Events plugin (bundled with Matomo and enabled by default).
 
-## Installation / Configuration
+### Installation / Configuration
 
 1. Install EventsEnhanced from the Marketplace (Administration > Platform > Marketplace), or copy the `EventsEnhanced` folder into the `plugins` directory of your Matomo installation.
 2. Activate it in Administration > Plugins.
@@ -34,11 +36,11 @@ Turn Matomo's Events reports into a navigable analysis: open a detail page for a
 
 There are no settings. Reports are built during archiving, so data appears for periods archived after activation. To see past periods, or to get the corrected numbers of this version for periods archived before an update, invalidate and re-archive them, for every period type (the default of the command), for example `./console core:invalidate-report-data --sites=1 --dates=2025-01-01,2025-12-31 --plugin=EventsEnhanced` then `./console core:archive`.
 
-## Privacy and data
+### Privacy and data
 
 All reports are computed inside your Matomo database from the events you already track. The plugin sends no data to third parties.
 
-## Need help with Matomo?
+### Need help with Matomo?
 
 Openmost is an official Matomo Implementation Partner. Event reports are only as useful as the tracking behind them: we design [Matomo tracking plans](https://openmost.com/matomo/services/tracking-architecture?utm_source=matomo_marketplace&utm_medium=referral&utm_campaign=services&utm_content=eventsenhanced) with consistent event naming, goals and custom dimensions, then implement them in your tag manager.
 
