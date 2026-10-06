@@ -10,6 +10,7 @@
 - Translated into 12 languages
 - The Premium links of the documentation and of the report previews open the EventsEnhanced page of openmost.com, the version notes follow the new 5.x / 6.x numbering
 - Shorter Marketplace description that fits the plugin cards, and campaign parameters on the Openmost links of the README.
+- README: the plugin description now shows in the Description tab of the Matomo Marketplace.
 
 ### v6.0.0
 
