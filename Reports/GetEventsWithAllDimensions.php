@@ -10,7 +10,6 @@
 namespace Piwik\Plugins\EventsEnhanced\Reports;
 
 use Piwik\Columns\Dimension;
-use Piwik\Common;
 use Piwik\Piwik;
 use Piwik\Plugin\ViewDataTable;
 use Piwik\Plugins\Events\Columns\EventAction;
@@ -19,6 +18,7 @@ use Piwik\Plugins\Events\Columns\EventName;
 use Piwik\Plugins\Events\Columns\Metrics\AverageEventValue;
 use Piwik\Plugins\Events\Reports\Base as EventsBase;
 use Piwik\Report\ReportWidgetFactory;
+use Piwik\Request;
 use Piwik\Widget\WidgetsList;
 
 /**
@@ -136,11 +136,12 @@ class GetEventsWithAllDimensions extends EventsBase
         $view->config->show_flatten_table = true;
 
         // Default to flat view with separate dimension columns (if not explicitly set in URL)
-        if (Common::getRequestVar('flat', '', 'string') === '') {
+        $request = Request::fromRequest();
+        if ($request->getStringParameter('flat', '') === '') {
             $view->requestConfig->flat = 1;
             $view->config->custom_parameters['flat'] = 1;
         }
-        if (Common::getRequestVar('show_dimensions', '', 'string') === '') {
+        if ($request->getStringParameter('show_dimensions', '') === '') {
             $view->requestConfig->show_dimensions = 1;
             $view->config->custom_parameters['show_dimensions'] = 1;
         }

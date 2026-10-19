@@ -14,6 +14,7 @@ use Piwik\Http\JsonResponse;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomDimensions\API as CustomDimensionsAPI;
 use Piwik\Plugins\CustomDimensions\CustomDimensions;
+use Piwik\Request;
 use Piwik\ViewDataTable\Factory as ViewDataTableFactory;
 
 /**
@@ -32,13 +33,9 @@ class Controller extends \Piwik\Plugin\Controller
         $this->checkSitePermission();
 
         // Default to 'name' dimension when accessing via menu (shows top event names)
-        $dimensionType = Common::getRequestVar('eventDimensionType', 'name', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'name';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('eventDimensionType', 'name');
 
-        $dimensionValue = Common::getRequestVar('eventDimensionValue', '', 'string');
-        $dimensionValue = Common::unsanitizeInputValue($dimensionValue);
+        $dimensionValue = Request::fromRequest()->getStringParameter('eventDimensionValue', '');
 
         // Fetch dimension values for selector
         $dimensionValues = $this->fetchDimensionValues($dimensionType);
@@ -104,8 +101,8 @@ class Controller extends \Piwik\Plugin\Controller
         try {
             $report = \Piwik\API\Request::processRequest($apiMethod, [
                 'idSite' => $this->idSite,
-                'period' => Common::getRequestVar('period', 'day', 'string'),
-                'date' => Common::getRequestVar('date', 'today', 'string'),
+                'period' => $this->getRequestString('period', 'day'),
+                'date' => $this->getRequestString('date', 'today'),
                 'filter_limit' => 500,
                 'filter_sort_order' => 'desc',
                 'filter_sort_column' => 'nb_events',
@@ -139,10 +136,7 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $this->checkSitePermission();
 
-        $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'category';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('eventDimensionType', 'category');
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -167,10 +161,7 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $this->checkSitePermission();
 
-        $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'category';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('eventDimensionType', 'category');
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -195,10 +186,7 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $this->checkSitePermission();
 
-        $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'category';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('eventDimensionType', 'category');
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
 
         $view = ViewDataTableFactory::build(
@@ -430,17 +418,19 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $this->checkSitePermission();
 
-        $dimensionType = Common::getRequestVar('eventDimensionType', 'category', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'category';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('eventDimensionType', 'category');
         $dimensionValue = $this->getDimensionValueFromRequest($dimensionType);
         $apiMethod = $this->getEventsApiMethod($dimensionType);
 
-        $columns = Common::getRequestVar('columns', false);
-        if (false !== $columns) {
-            $columns = Piwik::getArrayFromApiParameter($columns);
-        }
+        $columns = $this->getColumnsFromRequest([
+            'nb_visits',
+            'nb_events',
+            'sum_event_value',
+            'nb_events_with_value',
+            'min_event_value',
+            'max_event_value',
+            'avg_event_value',
+        ]);
 
         $view = $this->getLastUnitGraph(
             'EventsEnhanced',
@@ -485,8 +475,10 @@ class Controller extends \Piwik\Plugin\Controller
      */
     private function getDimensionValueFromRequest($dimensionType)
     {
+        $request = Request::fromRequest();
+
         // First try the new param name
-        $value = Common::getRequestVar('eventDimensionValue', '', 'string');
+        $value = $request->getStringParameter('eventDimensionValue', '');
 
         // Fallback to legacy param names
         if (empty($value)) {
@@ -496,10 +488,39 @@ class Controller extends \Piwik\Plugin\Controller
                 'name' => 'eventName',
             ];
             $paramName = $paramMap[$dimensionType] ?? 'eventCategory';
-            $value = Common::getRequestVar($paramName, '', 'string');
+            $value = $request->getStringParameter($paramName, '');
         }
 
-        return Common::unsanitizeInputValue($value);
+        return $value;
+    }
+
+    private function getDimensionTypeFromRequest(string $name, string $default): string
+    {
+        $dimensionType = Request::fromRequest()->getStringParameter($name, $default);
+
+        return in_array($dimensionType, ['category', 'action', 'name'], true) ? $dimensionType : $default;
+    }
+
+    /**
+     * An empty parameter (`period=`) is treated as missing and gets the default.
+     */
+    private function getRequestString(string $name, string $default): string
+    {
+        $value = Request::fromRequest()->getStringParameter($name, $default);
+
+        return $value === '' ? $default : $value;
+    }
+
+    /**
+     * Requested metrics end up in the graph series and labels, so only known metrics are kept.
+     */
+    private function getColumnsFromRequest(array $allowedColumns): array
+    {
+        $columns = Piwik::getArrayFromApiParameter(Request::fromRequest()->getParameter('columns', false));
+
+        return array_values(array_filter($columns, function ($column) use ($allowedColumns) {
+            return in_array($column, $allowedColumns, true);
+        }));
     }
 
     /**
@@ -525,10 +546,7 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $this->checkSitePermission();
 
-        $dimensionType = Common::getRequestVar('dimensionType', 'category', 'string');
-        if (!in_array($dimensionType, ['category', 'action', 'name'])) {
-            $dimensionType = 'category';
-        }
+        $dimensionType = $this->getDimensionTypeFromRequest('dimensionType', 'category');
 
         $values = $this->fetchDimensionValues($dimensionType);
 
@@ -608,10 +626,7 @@ class Controller extends \Piwik\Plugin\Controller
         $view->config->selectable_columns = $selectableColumns;
 
         // Check if columns parameter was passed in the request (user changed metric selection)
-        $columns = Common::getRequestVar('columns', false);
-        if (false !== $columns) {
-            $columns = Piwik::getArrayFromApiParameter($columns);
-        }
+        $columns = $this->getColumnsFromRequest($selectableColumns);
 
         // Use requested columns or default to nb_events
         if (!empty($columns)) {
