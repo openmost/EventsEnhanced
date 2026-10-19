@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "Ce rapport affiche tous les noms d'événements déclenchés pour l'action d'événement sélectionnée.",
         "EventCategoriesForNameDocumentation": "Ce rapport affiche toutes les catégories d'événements où le nom d'événement sélectionné a été déclenché.",
         "EventActionsForNameDocumentation": "Ce rapport affiche toutes les actions d'événements déclenchées pour le nom d'événement sélectionné.",
-        "PageUrlsDocumentation": "Ce rapport affiche les URLs des pages où les événements avec la valeur de dimension sélectionnée ont été déclenchés.",
-        "PageTitlesDocumentation": "Ce rapport affiche les titres des pages où les événements avec la valeur de dimension sélectionnée ont été déclenchés.",
-        "CountriesDocumentation": "Ce rapport affiche les pays où les événements avec la valeur de dimension sélectionnée ont été déclenchés.",
-        "CustomDimensionsDocumentation": "Ce rapport affiche les valeurs des dimensions personnalisées pour les événements déclenchés avec la valeur de dimension sélectionnée.",
         "EventCategoriesEvolution": "Évolution des catégories d'événements (top 10)",
         "EventCategoriesEvolutionDocumentation": "Ce rapport affiche l'évolution des principales catégories d'événements dans le temps, chaque catégorie étant affichée sur une ligne distincte.",
         "EventActionsEvolution": "Évolution des actions d'événements (top 10)",
@@ -28,18 +24,21 @@
         "DimensionsNoData": "Les dimensions %s n'ont pas de données pour la période sélectionnée.",
         "EventDetailsRowActionTitle": "Voir les détails de l'événement",
         "EventDetailsRowActionDescription": "Ouvrir la page d'analyses détaillées pour cet événement",
-        "PremiumLinkText": "Achetez le plugin EventsEnhanced Premium",
-        "PremiumText": "pour afficher les données du rapport :"
+        "PremiumLinkText": "Obtenez Events Enhanced Premium",
+        "PremiumText": "pour voir le rapport « %1$s »"
     },
     "OpenmostCommunication": {
         "Dismiss": "Masquer",
-        "WidgetName": "Openmost : configuration du suivi des chatbots IA",
+        "WidgetName": "Openmost : conseils et nouveautés",
         "AIChatbotsTitle": "Besoin d'aide pour configurer le suivi des chatbots IA ?",
         "AIChatbotsBody": "Implementation Partner officiel de Matomo, Openmost peut configurer le suivi des chatbots IA pour vous, sur Matomo On-Premise ou Cloud.",
         "AIChatbotsCta": "Faire configurer le suivi",
         "TrackingPlanTitle": "Les événements doivent être configurés manuellement",
         "TrackingPlanBody": "Les événements mesurent les clics, téléchargements, envois de formulaires ou lectures vidéo, à condition d'être suivis. Implementation Partner officiel de Matomo, Openmost conçoit et met en place un plan de marquage adapté à votre site.",
         "TrackingPlanCta": "Construire mon plan de marquage",
-        "EventsEnhancedLink": "Tirez davantage de vos événements avec Events Enhanced"
+        "EventsEnhancedLink": "Tirez davantage de vos événements avec Events Enhanced",
+        "EcommerceEnhancedTitle": "Nouveau : Ecommerce Enhanced pour Matomo",
+        "EcommerceEnhancedBody": "Ecommerce Enhanced étend largement les fonctionnalités ecommerce de Matomo : nouveaux rapports sur les produits, marques, promotions, coupons, funnels de checkout et acheteurs. Il s'adapte facilement à votre boutique en ligne, sans développement spécifique. Plugin gratuit par Openmost.",
+        "EcommerceEnhancedCta": "Découvrir Ecommerce Enhanced"
     }
 }

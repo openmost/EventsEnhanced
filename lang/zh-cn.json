@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "此报表显示所选事件动作下触发的所有事件名称。",
         "EventCategoriesForNameDocumentation": "此报表显示触发了所选事件名称的所有事件类别。",
         "EventActionsForNameDocumentation": "此报表显示所选事件名称下触发的所有事件动作。",
-        "PageUrlsDocumentation": "此报表显示触发了所选维度值事件的页面网址。",
-        "PageTitlesDocumentation": "此报表显示触发了所选维度值事件的页面标题。",
-        "CountriesDocumentation": "此报表显示触发了所选维度值事件的国家。",
-        "CustomDimensionsDocumentation": "此报表显示以所选维度值触发的事件的自定义维度值。",
         "EventCategoriesEvolution": "事件类别趋势（前 10 名）",
         "EventCategoriesEvolutionDocumentation": "此报表显示热门事件类别随时间的变化趋势，每个类别显示为一条单独的线。",
         "EventActionsEvolution": "事件动作趋势（前 10 名）",
@@ -28,18 +24,21 @@
         "DimensionsNoData": "维度 %s 在所选时间段内没有数据。",
         "EventDetailsRowActionTitle": "查看事件详情",
         "EventDetailsRowActionDescription": "打开此事件的详细分析页面",
-        "PremiumLinkText": "购买 EventsEnhanced Premium 插件",
-        "PremiumText": "以显示以下内容的报表数据："
+        "PremiumLinkText": "获取 Events Enhanced Premium",
+        "PremiumText": "即可查看报表“%1$s”"
     },
     "OpenmostCommunication": {
         "Dismiss": "关闭",
-        "WidgetName": "Openmost：AI 聊天机器人跟踪设置",
+        "WidgetName": "Openmost：技巧与新闻",
         "AIChatbotsTitle": "需要帮助设置 AI 聊天机器人跟踪吗？",
         "AIChatbotsBody": "作为 Matomo 官方 Implementation Partner，Openmost 可以为您配置 AI 聊天机器人跟踪，适用于 Matomo On-Premise 或 Cloud。",
         "AIChatbotsCta": "请人帮我配置",
         "TrackingPlanTitle": "事件需要手动配置",
         "TrackingPlanBody": "事件可以衡量点击、下载、表单提交或视频播放，前提是已完成跟踪配置。作为 Matomo 官方 Implementation Partner，Openmost 为您的网站设计并实施合适的跟踪方案。",
         "TrackingPlanCta": "制定我的跟踪方案",
-        "EventsEnhancedLink": "使用 Events Enhanced 充分利用您的事件数据"
+        "EventsEnhancedLink": "使用 Events Enhanced 充分利用您的事件数据",
+        "EcommerceEnhancedTitle": "全新推出：适用于 Matomo 的 Ecommerce Enhanced",
+        "EcommerceEnhancedBody": "Ecommerce Enhanced 大幅扩展了 Matomo 的电子商务功能，新增关于商品、品牌、促销、优惠券、结账漏斗和买家的报告。无需专门开发，即可轻松接入您的网店。由 Openmost 提供的免费插件。",
+        "EcommerceEnhancedCta": "了解 Ecommerce Enhanced"
     }
 }

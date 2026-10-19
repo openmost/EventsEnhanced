@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "Questo report mostra tutti i nomi evento attivati per l'azione evento selezionata.",
         "EventCategoriesForNameDocumentation": "Questo report mostra tutte le categorie evento in cui è stato attivato il nome evento selezionato.",
         "EventActionsForNameDocumentation": "Questo report mostra tutte le azioni evento attivate per il nome evento selezionato.",
-        "PageUrlsDocumentation": "Questo report mostra gli URL delle pagine in cui sono stati attivati eventi con il valore di dimensione selezionato.",
-        "PageTitlesDocumentation": "Questo report mostra i titoli delle pagine in cui sono stati attivati eventi con il valore di dimensione selezionato.",
-        "CountriesDocumentation": "Questo report mostra i paesi in cui sono stati attivati eventi con il valore di dimensione selezionato.",
-        "CustomDimensionsDocumentation": "Questo report mostra i valori delle dimensioni personalizzate per gli eventi attivati con il valore di dimensione selezionato.",
         "EventCategoriesEvolution": "Evoluzione delle categorie evento (top 10)",
         "EventCategoriesEvolutionDocumentation": "Questo report mostra l'evoluzione nel tempo delle principali categorie evento, con ogni categoria visualizzata come una linea separata.",
         "EventActionsEvolution": "Evoluzione delle azioni evento (top 10)",
@@ -28,18 +24,21 @@
         "DimensionsNoData": "Le dimensioni %s non hanno dati per il periodo selezionato.",
         "EventDetailsRowActionTitle": "Visualizza dettagli evento",
         "EventDetailsRowActionDescription": "Apri la pagina di analisi dettagliata di questo evento",
-        "PremiumLinkText": "Acquista il plugin EventsEnhanced Premium",
-        "PremiumText": "per visualizzare i dati del report per"
+        "PremiumLinkText": "Ottieni Events Enhanced Premium",
+        "PremiumText": "per vedere il report \"%1$s\""
     },
     "OpenmostCommunication": {
         "Dismiss": "Ignora",
-        "WidgetName": "Openmost: configurazione del tracciamento dei chatbot IA",
+        "WidgetName": "Openmost: consigli e novità",
         "AIChatbotsTitle": "Serve aiuto per configurare il tracciamento dei chatbot IA?",
         "AIChatbotsBody": "In qualità di Implementation Partner ufficiale di Matomo, Openmost può configurare il tracciamento dei chatbot IA per voi, su Matomo On-Premise o Cloud.",
         "AIChatbotsCta": "Richiedi la configurazione",
         "TrackingPlanTitle": "Gli eventi devono essere configurati manualmente",
         "TrackingPlanBody": "Gli eventi misurano clic, download, invii di moduli o riproduzioni video, se vengono tracciati. In qualità di Implementation Partner ufficiale di Matomo, Openmost progetta e implementa un piano di tracciamento adatto al vostro sito.",
         "TrackingPlanCta": "Creare il mio piano di tracciamento",
-        "EventsEnhancedLink": "Ottenete di più dai vostri eventi con Events Enhanced"
+        "EventsEnhancedLink": "Ottenete di più dai vostri eventi con Events Enhanced",
+        "EcommerceEnhancedTitle": "Novità: Ecommerce Enhanced per Matomo",
+        "EcommerceEnhancedBody": "Ecommerce Enhanced amplia notevolmente le funzionalità ecommerce di Matomo, con nuovi report su prodotti, brand, promozioni, coupon, funnel di checkout e acquirenti. Si integra facilmente nel vostro negozio online, senza sviluppi specifici. Plugin gratuito di Openmost.",
+        "EcommerceEnhancedCta": "Scoprite Ecommerce Enhanced"
     }
 }

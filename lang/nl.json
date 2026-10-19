@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "Dit rapport toont alle gebeurtenisnamen die zijn geactiveerd voor de geselecteerde gebeurtenisactie.",
         "EventCategoriesForNameDocumentation": "Dit rapport toont alle gebeurteniscategorieën waarin de geselecteerde gebeurtenisnaam is geactiveerd.",
         "EventActionsForNameDocumentation": "Dit rapport toont alle gebeurtenisacties die zijn geactiveerd voor de geselecteerde gebeurtenisnaam.",
-        "PageUrlsDocumentation": "Dit rapport toont de pagina-URL's waarop gebeurtenissen met de geselecteerde dimensiewaarde zijn geactiveerd.",
-        "PageTitlesDocumentation": "Dit rapport toont de paginatitels waarop gebeurtenissen met de geselecteerde dimensiewaarde zijn geactiveerd.",
-        "CountriesDocumentation": "Dit rapport toont de landen waarin gebeurtenissen met de geselecteerde dimensiewaarde zijn geactiveerd.",
-        "CustomDimensionsDocumentation": "Dit rapport toont de waarden van aangepaste dimensies voor gebeurtenissen die met de geselecteerde dimensiewaarde zijn geactiveerd.",
         "EventCategoriesEvolution": "Evolutie van gebeurteniscategorieën (top 10)",
         "EventCategoriesEvolutionDocumentation": "Dit rapport toont de evolutie van de belangrijkste gebeurteniscategorieën in de tijd, waarbij elke categorie als aparte lijn wordt weergegeven.",
         "EventActionsEvolution": "Evolutie van gebeurtenisacties (top 10)",
@@ -28,18 +24,21 @@
         "DimensionsNoData": "Dimensies %s hebben geen data voor de geselecteerde periode.",
         "EventDetailsRowActionTitle": "Details van gebeurtenis bekijken",
         "EventDetailsRowActionDescription": "Gedetailleerde analysepagina voor deze gebeurtenis openen",
-        "PremiumLinkText": "Koop de premium plugin EventsEnhanced",
-        "PremiumText": "om rapportgegevens weer te geven voor"
+        "PremiumLinkText": "Events Enhanced Premium aanschaffen",
+        "PremiumText": "om het rapport \"%1$s\" te bekijken"
     },
     "OpenmostCommunication": {
         "Dismiss": "Sluiten",
-        "WidgetName": "Openmost: instellen van AI-chatbottracking",
+        "WidgetName": "Openmost: tips en nieuws",
         "AIChatbotsTitle": "Hulp nodig bij het instellen van AI-chatbottracking?",
         "AIChatbotsBody": "Als officieel Matomo Implementation Partner kan Openmost AI-chatbottracking voor u instellen, op Matomo On-Premise of Cloud.",
         "AIChatbotsCta": "Laat het voor mij instellen",
         "TrackingPlanTitle": "Gebeurtenissen moeten handmatig worden ingesteld",
         "TrackingPlanBody": "Gebeurtenissen meten klikken, downloads, formulierverzendingen of videoweergaven, zodra ze worden gemeten. Als officieel Matomo Implementation Partner ontwerpt en implementeert Openmost een trackingplan dat bij uw site past.",
         "TrackingPlanCta": "Mijn trackingplan opstellen",
-        "EventsEnhancedLink": "Haal meer uit uw gebeurtenissen met Events Enhanced"
+        "EventsEnhancedLink": "Haal meer uit uw gebeurtenissen met Events Enhanced",
+        "EcommerceEnhancedTitle": "Nieuw: Ecommerce Enhanced voor Matomo",
+        "EcommerceEnhancedBody": "Ecommerce Enhanced breidt de ecommercefuncties van Matomo flink uit, met nieuwe rapporten over producten, merken, promoties, kortingscodes, checkout-funnels en kopers. Het past eenvoudig in uw webwinkel, zonder specifieke ontwikkeling. Gratis plugin van Openmost.",
+        "EcommerceEnhancedCta": "Ontdek Ecommerce Enhanced"
     }
 }
