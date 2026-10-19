@@ -2,10 +2,8 @@
   <div class="card">
     <div class="card-content omeh-card-content">
       <h2 class="card-title omeh-card-title">
-        <div class="title">{{ title }}</div>
-        <div class="omeh-badge-wrapper">
-          <span class="omeh-badge">Premium</span>
-        </div>
+        <span class="omeh-card-title-text">{{ title }}</span>
+        <span class="omeh-badge">Premium</span>
       </h2>
       <slot>
         <div class="omeh-premium-report-image-wrapper">
@@ -24,7 +22,7 @@
                    target="_blank"
                    rel="nofollow noopener"
                    class="omeh-link">{{ translate('EventsEnhanced_PremiumLinkText') }}</a>
-                {{ translate('EventsEnhanced_PremiumText') }} {{ title }}
+                {{ translate('EventsEnhanced_PremiumText', title) }}
               </p>
             </div>
           </div>
@@ -76,18 +74,19 @@ export default defineComponent({
 
 .omeh-card-title {
   display: flex !important;
-  justify-content: flex-start;
-  gap: .5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.omeh-badge-wrapper {
-  line-height: normal;
-  display: inline-block;
+.omeh-card-title-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-.omeh-badge-wrapper .omeh-badge {
-  display: inline-block;
+.omeh-card-title .omeh-badge {
+  flex-shrink: 0;
   padding: 2px 8px;
   background-color: #FFA32A;
   font-size: 12px;
