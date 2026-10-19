@@ -1,5 +1,10 @@
 ## Changelog
 
+### v6.0.2
+
+- Remove the Page URLs, Page titles and Countries controller actions: they called API methods that only exist in EventsEnhanced Premium and failed with "method does not exist". Nothing linked to them, the detail page keeps showing these reports as Premium previews.
+- Remove the unused `Pages` class and the documentation translations of the Premium-only reports.
+
 ### v6.0.1
 
 - Fix: event categories, actions and names with an apostrophe or another special character are shown as is in the Event value selector, they were escaped twice (`d&#039;un` instead of `d'un`). Their detail page no longer lists the value twice in the selector, and its reports now find their data.
