@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "Este relatório mostra todos os nomes de evento acionados para a ação de evento selecionada.",
         "EventCategoriesForNameDocumentation": "Este relatório mostra todas as categorias de evento em que o nome de evento selecionado foi acionado.",
         "EventActionsForNameDocumentation": "Este relatório mostra todas as ações de evento acionadas para o nome de evento selecionado.",
-        "PageUrlsDocumentation": "Este relatório mostra os URLs das páginas em que foram acionados eventos com o valor de dimensão selecionado.",
-        "PageTitlesDocumentation": "Este relatório mostra os títulos das páginas em que foram acionados eventos com o valor de dimensão selecionado.",
-        "CountriesDocumentation": "Este relatório mostra os países em que foram acionados eventos com o valor de dimensão selecionado.",
-        "CustomDimensionsDocumentation": "Este relatório mostra os valores das dimensões personalizadas dos eventos acionados com o valor de dimensão selecionado.",
         "EventCategoriesEvolution": "Evolução das categorias de evento (top 10)",
         "EventCategoriesEvolutionDocumentation": "Este relatório mostra a evolução das principais categorias de evento ao longo do tempo, com cada categoria apresentada numa linha separada.",
         "EventActionsEvolution": "Evolução das ações de evento (top 10)",
@@ -28,21 +24,24 @@
         "DimensionsNoData": "As dimensões %s não têm dados para o período selecionado.",
         "EventDetailsRowActionTitle": "Ver detalhes do evento",
         "EventDetailsRowActionDescription": "Abrir a página de análise detalhada deste evento",
-        "PremiumLinkText": "Comprar a extensão EventsEnhanced Premium",
-        "PremiumText": "para apresentar os dados do relatório de"
+        "PremiumLinkText": "Obter o Events Enhanced Premium",
+        "PremiumText": "para ver o relatório \"%1$s\""
     },
     "OpenmostCommunication": {
         "Dismiss": "Dispensar",
         "Matomo6Title": "O Matomo 6 chegou",
         "Matomo6Body": "A Openmost é Implementation Partner oficial da Matomo e trabalha com o Matomo desde 2016. Atualizar agora é mais simples do que recuperar o atraso daqui a alguns meses: as novidades e as melhorias de segurança chegam primeiro ao Matomo 6, e levamos a sua instância até lá com os relatórios e o seguimento intactos.",
         "Matomo6Cta": "Planear a minha atualização para o Matomo 6",
-        "WidgetName": "Openmost: configuração do seguimento de chatbots de IA",
+        "WidgetName": "Openmost: dicas e novidades",
         "AIChatbotsTitle": "Precisa de ajuda para configurar o seguimento de chatbots de IA?",
         "AIChatbotsBody": "Como Implementation Partner oficial da Matomo, a Openmost pode configurar o seguimento de chatbots de IA por si, no Matomo On-Premise ou Cloud.",
         "AIChatbotsCta": "Pedir a configuração",
         "TrackingPlanTitle": "Os eventos têm de ser configurados manualmente",
         "TrackingPlanBody": "Os eventos medem cliques, transferências, envios de formulários ou reproduções de vídeo, desde que sejam seguidos. Como Implementation Partner oficial da Matomo, a Openmost concebe e implementa um plano de marcação adaptado ao seu site.",
         "TrackingPlanCta": "Criar o meu plano de marcação",
-        "EventsEnhancedLink": "Tire mais partido dos seus eventos com o Events Enhanced"
+        "EventsEnhancedLink": "Tire mais partido dos seus eventos com o Events Enhanced",
+        "EcommerceEnhancedTitle": "Novidade: Ecommerce Enhanced para o Matomo",
+        "EcommerceEnhancedBody": "O Ecommerce Enhanced alarga consideravelmente as funcionalidades de comércio eletrónico do Matomo, com novos relatórios sobre produtos, marcas, promoções, cupões, funis de checkout e compradores. Integra-se facilmente na sua loja online, sem desenvolvimento específico. Plugin gratuito da Openmost.",
+        "EcommerceEnhancedCta": "Descobrir o Ecommerce Enhanced"
     }
 }

@@ -11,10 +11,6 @@
         "EventNamesForActionDocumentation": "Dieser Bericht zeigt alle Ereignisnamen, die für die ausgewählte Ereignisaktion ausgelöst wurden.",
         "EventCategoriesForNameDocumentation": "Dieser Bericht zeigt alle Ereigniskategorien, in denen der ausgewählte Ereignisname ausgelöst wurde.",
         "EventActionsForNameDocumentation": "Dieser Bericht zeigt alle Ereignisaktionen, die für den ausgewählten Ereignisnamen ausgelöst wurden.",
-        "PageUrlsDocumentation": "Dieser Bericht zeigt die Seiten-URLs, auf denen Ereignisse mit dem ausgewählten Dimensionswert ausgelöst wurden.",
-        "PageTitlesDocumentation": "Dieser Bericht zeigt die Seitentitel, auf denen Ereignisse mit dem ausgewählten Dimensionswert ausgelöst wurden.",
-        "CountriesDocumentation": "Dieser Bericht zeigt die Länder, in denen Ereignisse mit dem ausgewählten Dimensionswert ausgelöst wurden.",
-        "CustomDimensionsDocumentation": "Dieser Bericht zeigt die Werte benutzerdefinierter Dimensionen für Ereignisse, die mit dem ausgewählten Dimensionswert ausgelöst wurden.",
         "EventCategoriesEvolution": "Entwicklung der Ereigniskategorien (Top 10)",
         "EventCategoriesEvolutionDocumentation": "Dieser Bericht zeigt die Entwicklung der wichtigsten Ereigniskategorien im Zeitverlauf, wobei jede Kategorie als eigene Linie dargestellt wird.",
         "EventActionsEvolution": "Entwicklung der Ereignisaktionen (Top 10)",
@@ -28,21 +24,24 @@
         "DimensionsNoData": "Die Dimensionen %s haben keine Daten für den ausgewählten Zeitraum.",
         "EventDetailsRowActionTitle": "Ereignisdetails anzeigen",
         "EventDetailsRowActionDescription": "Detaillierte Analyseseite für dieses Ereignis öffnen",
-        "PremiumLinkText": "Kaufen Sie das Premium-Plugin EventsEnhanced",
-        "PremiumText": "um Berichtsdaten anzuzeigen für"
+        "PremiumLinkText": "Holen Sie sich Events Enhanced Premium",
+        "PremiumText": "um den Bericht „%1$s“ zu sehen"
     },
     "OpenmostCommunication": {
         "Dismiss": "Ausblenden",
         "Matomo6Title": "Matomo 6 ist da",
         "Matomo6Body": "Openmost ist offizieller Matomo Implementation Partner und arbeitet seit 2016 mit Matomo. Jetzt zu aktualisieren ist einfacher, als in einigen Monaten aufzuholen: Neue Funktionen und Sicherheitsverbesserungen erscheinen zuerst in Matomo 6, und wir bringen Sie dorthin, ohne dass Berichte oder Tracking verloren gehen.",
         "Matomo6Cta": "Mein Matomo-6-Upgrade planen",
-        "WidgetName": "Openmost: Einrichtung des KI-Chatbot-Trackings",
+        "WidgetName": "Openmost: Tipps und Neuigkeiten",
         "AIChatbotsTitle": "Brauchen Sie Hilfe beim Einrichten des KI-Chatbot-Trackings?",
         "AIChatbotsBody": "Als offizieller Matomo Implementation Partner richtet Openmost das KI-Chatbot-Tracking für Sie ein, auf Matomo On-Premise oder Cloud.",
         "AIChatbotsCta": "Tracking einrichten lassen",
         "TrackingPlanTitle": "Ereignisse müssen manuell eingerichtet werden",
         "TrackingPlanBody": "Ereignisse messen Klicks, Downloads, Formularübermittlungen oder Videowiedergaben, sobald sie erfasst werden. Als offizieller Matomo Implementation Partner konzipiert und setzt Openmost einen Tracking-Plan um, der zu Ihrer Website passt.",
         "TrackingPlanCta": "Meinen Tracking-Plan erstellen",
-        "EventsEnhancedLink": "Holen Sie mit Events Enhanced mehr aus Ihren Ereignissen heraus"
+        "EventsEnhancedLink": "Holen Sie mit Events Enhanced mehr aus Ihren Ereignissen heraus",
+        "EcommerceEnhancedTitle": "Neu: Ecommerce Enhanced für Matomo",
+        "EcommerceEnhancedBody": "Ecommerce Enhanced erweitert die E-Commerce-Funktionen von Matomo erheblich, mit neuen Berichten zu Produkten, Marken, Aktionen, Gutscheinen, Checkout-Funnels und Käufern. Es lässt sich ganz einfach in Ihren Onlineshop einbinden, ohne spezielle Entwicklung. Kostenloses Plugin von Openmost.",
+        "EcommerceEnhancedCta": "Ecommerce Enhanced entdecken"
     }
 }
