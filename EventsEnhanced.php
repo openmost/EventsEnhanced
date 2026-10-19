@@ -16,8 +16,7 @@ namespace Piwik\Plugins\EventsEnhanced;
  * Each detail page shows:
  * - Evolution graph for the dimension value
  * - Reports for related dimensions
- * - Page URLs and titles where events were triggered
- * - Custom dimension reports (if available)
+ * - Previews of the Premium reports (page URLs, countries, Custom Dimensions)
  */
 class EventsEnhanced extends \Piwik\Plugin
 {
