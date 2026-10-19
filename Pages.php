@@ -9,10 +9,10 @@
 
 namespace Piwik\Plugins\EventsEnhanced;
 
-use Piwik\Common;
 use Piwik\Piwik;
 use Piwik\Plugins\CoreVisualizations\Visualizations\JqplotGraph\Evolution;
 use Piwik\Report\ReportWidgetFactory;
+use Piwik\Request;
 
 /**
  * Pages helper for EventsEnhanced plugin
@@ -36,8 +36,13 @@ class Pages
      */
     private function loadDimensionFromUrl()
     {
-        $this->dimensionType = Common::getRequestVar('eventDimensionType', 'name', 'string');
-        $this->dimensionValue = Common::getRequestVar('eventDimensionValue', '', 'string');
+        $request = Request::fromRequest();
+
+        $this->dimensionType = $request->getStringParameter('eventDimensionType', 'name');
+        if (!in_array($this->dimensionType, ['category', 'action', 'name'], true)) {
+            $this->dimensionType = 'name';
+        }
+        $this->dimensionValue = $request->getStringParameter('eventDimensionValue', '');
 
         $paramMap = [
             'category' => 'eventCategory',
@@ -48,7 +53,7 @@ class Pages
 
         // Try legacy parameter names
         if (empty($this->dimensionValue)) {
-            $this->dimensionValue = Common::getRequestVar($this->paramName, '', 'string');
+            $this->dimensionValue = $request->getStringParameter($this->paramName, '');
         }
     }
 
