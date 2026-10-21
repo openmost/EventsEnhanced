@@ -32,6 +32,9 @@ class Archiver extends \Piwik\Plugin\Archiver
     // 3-level hierarchy: Category -> Action -> Name
     const RECORD_EVENTS_ALL_DIMENSIONS = 'EventsEnhanced_EventsAllDimensions';
 
+    // GA4 automatic events rebuilt from Matomo data
+    const RECORD_EVENTS_DERIVED_FROM_ACTIONS = 'EventsEnhanced_EventsDerivedFromActions';
+
     // Event Value relations (value as dimension label)
     // Event Category -> Event Values
     const RECORD_EVENT_CATEGORY_VALUES = 'EventsEnhanced_EventCategoryValues';

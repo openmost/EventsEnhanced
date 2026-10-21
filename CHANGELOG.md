@@ -1,7 +1,13 @@
 ## Changelog
 
-### v5.1.1
+### v5.2.0
 
+- New **Events derived from actions** report under Behavior > Events, below Events (All Dimensions): the events GA4 collects automatically, rebuilt from Matomo data so you can compare Matomo with the GA4 Events report. `session_start` and `first_visit` from visits, `page_view` from pageviews, `click` from outlinks, `file_download` from downloads, `view_search_results` from site searches and, with Media Analytics, `video_start`, `video_progress` (10, 25, 50 and 75% milestones) and `video_complete` from video plays and, with Form Analytics, `form_start` and `form_submit` from form starts and submissions. They are not Matomo events: they complement Events (All Dimensions) without mixing with it, a Counted from column shows the Matomo data behind each row and each row opens the visitor log on the matching segment. Also available as a dashboard widget and through the API (`EventsEnhanced.getEventsDerivedFromActions`). The update schedules it for past periods, the next `core:archive` run builds them.
+- EventsEnhanced Premium is now an add-on of this plugin instead of a standalone edition: installed next to it, it replaces the previews of the event detail pages with its reports (page URLs, countries, Custom Dimensions), and this plugin keeps archiving every common report, so their history survives switching the add-on on and off.
+- Activating the plugin rebuilds its reports for past periods from the raw logs on the next `core:archive` run, so a site that installs it gets its history without running any command. The period follows the `[General] rearchive_reports_in_past_last_n_months` setting of Matomo (6 months by default), raise it in `config/config.ini.php` to rebuild further back.
+- The related breakdown reports of the detail pages declare a report category, so their metadata is complete for API and AI clients such as the McpServer plugin.
+- Events (All Dimensions) is shown full width.
+- Media Analytics events follow the GA4 event names: the event name of the automatic video and audio events becomes `video_start`, `video_pause`, `video_resume`, `video_seek` and `video_complete` (`audio_*` for audio) instead of the media title. The action is capitalized (`Play`, `Pause`, `Resume`, `Seek`, `Finish`), the category (`MediaVideo`, `MediaAudio`) is unchanged and the media title stays in the Media reports. Only events tracked after the update are renamed. Nothing changes when Media Analytics is not activated.
 - Remove the Page URLs, Page titles and Countries controller actions: they called API methods that only exist in EventsEnhanced Premium and failed with "method does not exist". Nothing linked to them, the detail page keeps showing these reports as Premium previews.
 - Remove the unused `Pages` class and the documentation translations of the Premium-only reports.
 

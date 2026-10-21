@@ -52,6 +52,7 @@ class Controller extends \Piwik\Plugin\Controller
             'selectedDimensionValue' => $dimensionValue,
             'dimensionValues' => $dimensionValues,
             'customDimensions' => $customDimensions,
+            'premiumActivated' => EventsEnhanced::isPremiumActivated(),
         ]);
     }
 

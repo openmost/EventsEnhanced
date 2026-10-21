@@ -18,6 +18,7 @@ use Piwik\Piwik;
 use Piwik\Plugins\Events\Archiver as EventsArchiver;
 use Piwik\Plugins\CustomDimensions\API as CustomDimensionsAPI;
 use Piwik\Plugins\CustomDimensions\CustomDimensions;
+use Piwik\Plugins\EventsEnhanced\RecordBuilders\EventsDerivedFromActions;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -29,6 +30,19 @@ use Psr\Log\LoggerInterface;
  */
 class API extends \Piwik\Plugin\API
 {
+    private const DERIVED_EVENT_SEGMENTS = [
+        EventsDerivedFromActions::SOURCE_NEW_VISITS => 'visitorType==new',
+        EventsDerivedFromActions::SOURCE_PAGEVIEWS => 'actionType==pageviews',
+        EventsDerivedFromActions::SOURCE_OUTLINKS => 'actionType==outlinks',
+        EventsDerivedFromActions::SOURCE_DOWNLOADS => 'actionType==downloads',
+        EventsDerivedFromActions::SOURCE_SITE_SEARCH => 'actionType==sitesearches',
+        EventsDerivedFromActions::SOURCE_VIDEO_PLAYS => 'media_plays_type==video',
+        EventsDerivedFromActions::SOURCE_VIDEO_PROGRESS => 'media_plays_type==video',
+        EventsDerivedFromActions::SOURCE_VIDEO_COMPLETE => 'media_plays_type==video',
+        EventsDerivedFromActions::SOURCE_FORM_STARTS => 'form_num_starts>0',
+        EventsDerivedFromActions::SOURCE_FORM_SUBMISSIONS => 'form_num_submissions>0',
+    ];
+
     /**
      * Get event actions for a specific category value
      * Uses archived data from RecordBuilder for action-level filtering
@@ -441,6 +455,38 @@ class API extends \Piwik\Plugin\API
         }
 
         $dataTable->filter('Piwik\Plugins\Events\DataTable\Filter\ReplaceEventNameNotSet');
+        $dataTable->queueFilter('ReplaceColumnNames');
+
+        return $dataTable;
+    }
+
+    /**
+     * The events GA4 collects automatically (session_start, first_visit, page_view, click, file_download,
+     * view_search_results, and video_start, video_progress, video_complete with Media Analytics), rebuilt from
+     * Matomo data. They are not Matomo events, the "source" row metadata names the Matomo data each one is counted
+     * from (visits, new_visits, pageviews, outlinks, downloads, site_search, video_plays, video_progress,
+     * video_complete).
+     *
+     * @param int $idSite
+     * @param string $period
+     * @param string $date
+     * @param bool|string $segment
+     * @return DataTable|DataTable\Map
+     */
+    public function getEventsDerivedFromActions($idSite, $period, $date, $segment = false)
+    {
+        Piwik::checkUserHasViewAccess($idSite);
+
+        $dataTable = Archive::createDataTableFromArchive(Archiver::RECORD_EVENTS_DERIVED_FROM_ACTIONS, $idSite, $period, $date, $segment);
+
+        $dataTable->filter(function (DataTable $table) {
+            foreach ($table->getRows() as $row) {
+                $source = $row->getMetadata(EventsDerivedFromActions::METADATA_SOURCE);
+                if (isset(self::DERIVED_EVENT_SEGMENTS[$source])) {
+                    $row->setMetadata('segment', self::DERIVED_EVENT_SEGMENTS[$source]);
+                }
+            }
+        });
         $dataTable->queueFilter('ReplaceColumnNames');
 
         return $dataTable;

@@ -9,6 +9,9 @@
 
 namespace Piwik\Plugins\EventsEnhanced;
 
+use Piwik\Archive\ArchiveInvalidator;
+use Piwik\Container\StaticContainer;
+
 /**
  * EventsEnhanced plugin - Enhances Matomo native events reports with detailed dimension pages
  *
@@ -36,6 +39,41 @@ class EventsEnhanced extends \Piwik\Plugin
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'Url.getQueryParametersToExclude' => 'getQueryParametersToExclude',
         ];
+    }
+
+    public const PREMIUM_PLUGIN = 'EventsEnhancedPremium';
+
+    /**
+     * EventsEnhancedPremium is an add-on of this plugin: when it is activated, its reports replace the previews
+     */
+    public static function isPremiumActivated(): bool
+    {
+        return \Piwik\Plugin\Manager::getInstance()->isPluginActivated(self::PREMIUM_PLUGIN);
+    }
+
+    /**
+     * Rebuilds the reports of past periods from the raw logs, so a site that switches between the free and the
+     * Premium plugin, or installs one of them, gets its history back without running any command. The period
+     * is limited by the [General] rearchive_reports_in_past_last_n_months setting.
+     */
+    public function activate()
+    {
+        $this->schedulePluginReArchiving();
+    }
+
+    public function deactivate()
+    {
+        StaticContainer::get(ArchiveInvalidator::class)->removeInvalidationsSafely('all', $this->getPluginName());
+    }
+
+    /**
+     * Loads the plugin in tracker mode for Tracker\RequestProcessor, which renames the Media Analytics events
+     *
+     * @return bool
+     */
+    public function isTrackerPlugin()
+    {
+        return true;
     }
 
     /**
@@ -83,6 +121,10 @@ class EventsEnhanced extends \Piwik\Plugin
         $translationKeys[] = 'EventsEnhanced_EventsOverTime';
         $translationKeys[] = 'EventsEnhanced_EventDetailsRowActionTitle';
         $translationKeys[] = 'EventsEnhanced_EventDetailsRowActionDescription';
+        $translationKeys[] = 'EventsEnhanced_DimensionNoData';
+        $translationKeys[] = 'EventsEnhanced_DimensionsNoData';
+        $translationKeys[] = 'CoreHome_ThereIsNoDataForThisReport';
+        $translationKeys[] = 'General_And';
 
         // Core Events translation keys (used in dimension selectors and reports)
         $translationKeys[] = 'Events_EventCategory';

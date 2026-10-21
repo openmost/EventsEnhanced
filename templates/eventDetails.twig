@@ -5,5 +5,6 @@
         initial-dimension-value="{{ selectedDimensionValue|default('') }}"
         dimension-values="{{ dimensionValues|default([])|json_encode }}"
         custom-dimensions="{{ customDimensions|default([])|json_encode }}"
+        premium-activated="{{ premiumActivated|default(false)|json_encode }}"
     ></div>
 </div>
