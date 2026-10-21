@@ -12,12 +12,14 @@ Turn Matomo's Events reports into a navigable analysis: open a detail page for a
 - **Events (All Dimensions) report** under Behavior > Events: category, action and name in one hierarchical table, with visits, unique visitors, events, total, minimum, maximum and average event value. It is also available as a dashboard widget.
 - **Top 10 evolution graphs** for event names (under Behavior > Events), and for event categories and actions (from the Related Reports links), with one line per value.
 - **API methods** for every breakdown, for example `EventsEnhanced.getEventActionsForCategory`, `EventsEnhanced.getEventNamesForAction`, `EventsEnhanced.getEventValuesForName`, `EventsEnhanced.getEventsWithAllDimensions` and `EventsEnhanced.getEventNamesEvolution`. Report metadata is complete, so API and AI clients (such as the McpServer plugin) can discover them.
+- **Events derived from actions report** under Behavior > Events: the events GA4 collects automatically (`session_start`, `first_visit`, `page_view`, `click`, `file_download`, `view_search_results`, and `video_start`, `video_progress`, `video_complete` with Media Analytics, `form_start`, `form_submit` with Form Analytics), rebuilt from Matomo data and kept apart from your events, so you can compare Matomo with the GA4 Events report line by line.
+- **GA4 names for Media Analytics events**: when the Media Analytics plugin is activated, its automatic video and audio events are named after the GA4 events (`video_start`, `video_pause`, `video_resume`, `video_seek`, `video_complete`, and `audio_*` for audio) instead of the media title, so the Event Names report lists interactions you can compare with GA4.
 - Segments, periods and the standard view permission of the Events reports apply everywhere.
 - Translated into 12 languages.
 
 #### Premium version
 
-[EventsEnhanced Premium](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_marketplace&utm_medium=referral&utm_campaign=premium_upgrade&utm_content=eventsenhanced) adds three reports to every detail page, shown as previews in the free version:
+[EventsEnhanced Premium](https://openmost.com/matomo/extensions/events-enhanced?utm_source=matomo_marketplace&utm_medium=referral&utm_campaign=premium_upgrade&utm_content=eventsenhanced) is an add-on of this plugin: installed next to it, it replaces the previews of every detail page with three reports:
 
 - **Page URLs** and **Page titles** where the selected events were actually triggered.
 - **Countries** of the visitors who triggered them.

@@ -1,5 +1,17 @@
 ## FAQ
 
+**I just installed the plugin, where is my history?**
+
+Activating the plugin schedules its reports for past periods (EventsEnhanced Premium does the same for its own reports): the next `core:archive` run rebuilds them from the raw logs, nothing to do. How far back follows the `rearchive_reports_in_past_last_n_months` setting of Matomo (6 months by default). To go further, set it in the `[General]` section of `config/config.ini.php` before activating the plugin, or invalidate older periods with the commands below. Periods whose raw logs were deleted (`delete_logs_older_than`) cannot be rebuilt.
+
+**What is the Events derived from actions report?**
+
+It lists the events GA4 collects automatically (`page_view`, `click`, `file_download`, `video_start`...), rebuilt from Matomo pageviews, outlinks, downloads, site searches, visits, Media Analytics plays and Form Analytics forms, so you can compare Matomo with GA4. These rows are not stored as Matomo events: your own events stay in Events (All Dimensions) and the other Events reports, the two never mix.
+
+**Why do my Media Analytics events show video_start instead of the video title?**
+
+The plugin renames the automatic Media Analytics events after the GA4 event names (`video_start`, `video_complete`...), so the Event Names report counts interactions instead of listing titles. The action is capitalized (`Play`, `Finish`...). Per video figures are in the Media reports of Media Analytics. Events you track yourself are renamed only when they use the `MediaVideo` or `MediaAudio` category with one of the actions `play`, `pause`, `resume`, `seek` or `finish`.
+
 **How do I access the event detail pages?**
 
 Open any Events report (Behavior > Events), hover a row and click the "View Event Details" icon.

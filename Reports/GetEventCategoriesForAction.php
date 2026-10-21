@@ -31,6 +31,11 @@ class GetEventCategoriesForAction extends Report
         $this->dimension = new EventCategory();
         $this->order = 112;
 
+        // Like core subtable reports: a category keeps the report metadata complete for API consumers such as
+        // McpServer, and without a subcategory it adds no menu entry or widget
+        $this->categoryId = 'General_Actions';
+        $this->isSubtableReport = true;
+
         // Define metrics
         $this->metrics = ['nb_visits', 'nb_events', 'nb_events_with_value', 'sum_event_value'];
         $this->processedMetrics = [];

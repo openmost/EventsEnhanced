@@ -17,10 +17,20 @@
         :base-params="baseWidgetParams"
         :dimension-type="selectedType"
       />
-      <PagesCountriesSection />
-      <CustomDimensionsSection
-        :custom-dimensions="customDimensions"
+      <PagesCountriesSection
+        :base-params="baseWidgetParams"
+        :premium-activated="premiumActivated"
       />
+      <CustomDimensionsSection
+        :base-params="baseWidgetParams"
+        :custom-dimensions="customDimensions"
+        :premium-activated="premiumActivated"
+      />
+    </div>
+
+    <!-- No data message -->
+    <div v-else class="alert alert-info">
+      {{ translate('CoreHome_ThereIsNoDataForThisReport') }}
     </div>
   </div>
 </template>
@@ -67,6 +77,11 @@ export default defineComponent({
     customDimensions: {
       type: Array as () => CustomDimension[],
       default: () => [],
+    },
+    // EventsEnhancedPremium is activated: its reports replace the previews
+    premiumActivated: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

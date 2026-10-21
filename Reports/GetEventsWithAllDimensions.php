@@ -59,6 +59,7 @@ class GetEventsWithAllDimensions extends EventsBase
             $factory->createWidget()
                 ->setName('EventsEnhanced_EventsWithAllDimensions')
                 ->setAction('getEventsWithAllDimensions')
+                ->setIsWide()
                 ->setOrder(2)
         );
     }
