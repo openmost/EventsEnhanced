@@ -1,5 +1,9 @@
 ## Changelog
 
+### v5.2.1
+
+- Fix the archiving of the Events derived from actions report under a segment when Media Analytics or Form Analytics is activated: it failed with "Unknown column 'log_inner.idsite'" and stopped the segment archive.
+
 ### v5.2.0
 
 - New **Events derived from actions** report under Behavior > Events, below Events (All Dimensions): the events GA4 collects automatically, rebuilt from Matomo data so you can compare Matomo with the GA4 Events report. `session_start` and `first_visit` from visits, `page_view` from pageviews, `click` from outlinks, `file_download` from downloads, `view_search_results` from site searches and, with Media Analytics, `video_start`, `video_progress` (10, 25, 50 and 75% milestones) and `video_complete` from video plays and, with Form Analytics, `form_start` and `form_submit` from form starts and submissions. They are not Matomo events: they complement Events (All Dimensions) without mixing with it, a Counted from column shows the Matomo data behind each row and each row opens the visitor log on the matching segment. Also available as a dashboard widget and through the API (`EventsEnhanced.getEventsDerivedFromActions`). The update schedules it for past periods, the next `core:archive` run builds them.

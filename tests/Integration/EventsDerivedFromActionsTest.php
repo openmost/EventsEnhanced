@@ -140,6 +140,24 @@ class EventsDerivedFromActionsTest extends IntegrationTestCase
         $this->assertSame(['form_submissions', 1, 1], $rows['form_submit']);
     }
 
+    public function test_videoAndFormEvents_areDerivedUnderASegment(): void
+    {
+        if (!Manager::getInstance()->isPluginActivated('MediaAnalytics') || !Manager::getInstance()->isPluginActivated('FormAnalytics')) {
+            $this->markTestSkipped('Media Analytics and Form Analytics are not activated');
+        }
+
+        $idVisit = (int) Db::fetchOne('SELECT idvisit FROM ' . Common::prefixTable('log_visit') . ' WHERE idsite = ? ORDER BY idvisit LIMIT 1', [$this->idSite]);
+
+        $this->insertPlay($idVisit, 'p00001', 100, 100, 90);
+        $this->insertForm($idVisit, 'f00001', 2, 1);
+
+        // The segment wraps the query in a subselect, which used to fail on the outer GROUP BY idsite
+        $rows = $this->rows('2025-01-06', 'day', 'visitorType==new');
+
+        $this->assertSame(['video_plays', 1, 1], $rows['video_start']);
+        $this->assertSame(['form_starts', 2, 1], $rows['form_start']);
+    }
+
     private function insertForm(int $idVisit, string $idFormView, int $starts, int $submissions): void
     {
         Db::query(
@@ -160,10 +178,10 @@ class EventsDerivedFromActionsTest extends IntegrationTestCase
         );
     }
 
-    private function rows(string $date, string $period = 'day'): array
+    private function rows(string $date, string $period = 'day', string $segment = ''): array
     {
         $rows = [];
-        foreach ($this->table($date, $period) as $row) {
+        foreach ($this->table($date, $period, $segment) as $row) {
             $rows[$row['label']] = [
                 $row['source'],
                 (int) $row['nb_events'],
@@ -175,7 +193,7 @@ class EventsDerivedFromActionsTest extends IntegrationTestCase
         return $rows;
     }
 
-    private function table(string $date, string $period = 'day'): array
+    private function table(string $date, string $period = 'day', string $segment = ''): array
     {
         $json = Request::processRequest(static::PLUGIN . '.getEventsDerivedFromActions', [
             'idSite' => $this->idSite,
@@ -183,6 +201,7 @@ class EventsDerivedFromActionsTest extends IntegrationTestCase
             'date' => $date,
             'format' => 'json',
             'filter_limit' => -1,
+            'segment' => $segment,
         ]);
 
         return json_decode($json, true);

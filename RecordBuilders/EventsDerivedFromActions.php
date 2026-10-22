@@ -244,7 +244,7 @@ class EventsDerivedFromActions extends RecordBuilder
         }
 
         try {
-            $query = $logAggregator->generateQuery($select, [$table], $where, $table . '.idsite', '');
+            $query = $logAggregator->generateQuery($select, [$table], $where, '', '');
         } finally {
             // it would otherwise apply to the archiving queries of other plugins
             if ($forceInnerGroupBy) {
