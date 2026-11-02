@@ -1,5 +1,9 @@
 ## Changelog
 
+### v6.1.2
+
+- Fix the row evolution of the event detail page tables: opening the chart of a row failed with "Requested report not found". It also works for the page URLs, page titles, countries and Custom Dimensions tables of EventsEnhanced Premium, without any new archive.
+
 ### v6.1.1
 
 - Fix the archiving of the Events derived from actions report under a segment when Media Analytics or Form Analytics is activated: it failed with "Unknown column 'log_inner.idsite'" and stopped the segment archive.

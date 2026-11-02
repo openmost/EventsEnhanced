@@ -1,5 +1,6 @@
 {
     "EventsEnhanced": {
+        "EventValuesDocumentation": "Quantos eventos do evento selecionado foram enviados com cada valor.",
         "PluginDescription": "Enriqueça os relatórios de eventos nativos do Matomo com páginas detalhadas por dimensão",
         "EventsDetails": "Detalhes dos eventos",
         "EventDimension": "Dimensão do evento",
