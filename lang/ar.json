@@ -1,5 +1,6 @@
 {
     "EventsEnhanced": {
+        "EventValuesDocumentation": "عدد الأحداث المرسلة بكل قيمة للحدث المحدد.",
         "PluginDescription": "تعزيز تقارير الأحداث الأصلية في Matomo بصفحات أبعاد تفصيلية",
         "EventsDetails": "تفاصيل الأحداث",
         "EventDimension": "بُعد الحدث",

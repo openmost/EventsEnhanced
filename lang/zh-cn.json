@@ -1,5 +1,6 @@
 {
     "EventsEnhanced": {
+        "EventValuesDocumentation": "所选事件按每个值发送的事件数。",
         "PluginDescription": "通过详细的维度页面增强 Matomo 原生事件报表",
         "EventsDetails": "事件详情",
         "EventDimension": "事件维度",

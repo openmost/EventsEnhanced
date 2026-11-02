@@ -1,5 +1,6 @@
 {
     "EventsEnhanced": {
+        "EventValuesDocumentation": "選択したイベントについて、各値で送信されたイベント数です。",
         "PluginDescription": "Matomo 標準のイベントレポートを、詳細なディメンションページで強化します",
         "EventsDetails": "イベントの詳細",
         "EventDimension": "イベントのディメンション",

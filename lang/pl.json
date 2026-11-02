@@ -1,5 +1,6 @@
 {
     "EventsEnhanced": {
+        "EventValuesDocumentation": "Liczba zdarzeń wybranego zdarzenia wysłanych z każdą wartością.",
         "PluginDescription": "Rozszerz natywne raporty zdarzeń Matomo o szczegółowe strony wymiarów",
         "EventsDetails": "Szczegóły zdarzeń",
         "EventDimension": "Wymiar zdarzenia",

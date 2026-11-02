@@ -145,6 +145,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventCategory'] = $eventCategory;
+        $view->config->custom_parameters['eventCategory'] = $eventCategory;
 
         $view->config->title = Piwik::translate('Events_EventActions');
         $this->configureEventDimensionTable($view);
@@ -168,6 +169,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventCategory'] = $eventCategory;
+        $view->config->custom_parameters['eventCategory'] = $eventCategory;
 
         $view->config->title = Piwik::translate('Events_EventNames');
         $this->configureEventDimensionTable($view);
@@ -191,6 +193,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventAction'] = $eventAction;
+        $view->config->custom_parameters['eventAction'] = $eventAction;
 
         $view->config->title = Piwik::translate('Events_EventCategories');
         $this->configureEventDimensionTable($view);
@@ -214,6 +217,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventAction'] = $eventAction;
+        $view->config->custom_parameters['eventAction'] = $eventAction;
 
         $view->config->title = Piwik::translate('Events_EventNames');
         $this->configureEventDimensionTable($view);
@@ -237,6 +241,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventName'] = $eventName;
+        $view->config->custom_parameters['eventName'] = $eventName;
 
         $view->config->title = Piwik::translate('Events_EventCategories');
         $this->configureEventDimensionTable($view);
@@ -260,6 +265,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventName'] = $eventName;
+        $view->config->custom_parameters['eventName'] = $eventName;
 
         $view->config->title = Piwik::translate('Events_EventActions');
         $this->configureEventDimensionTable($view);
@@ -283,6 +289,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventCategory'] = $eventCategory;
+        $view->config->custom_parameters['eventCategory'] = $eventCategory;
 
         $view->config->title = Piwik::translate('Events_EventValue');
         $this->configureEventDimensionTable($view);
@@ -306,6 +313,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventAction'] = $eventAction;
+        $view->config->custom_parameters['eventAction'] = $eventAction;
 
         $view->config->title = Piwik::translate('Events_EventValue');
         $this->configureEventDimensionTable($view);
@@ -329,6 +337,7 @@ class Controller extends \Piwik\Plugin\Controller
         );
 
         $view->requestConfig->request_parameters_to_modify['eventName'] = $eventName;
+        $view->config->custom_parameters['eventName'] = $eventName;
 
         $view->config->title = Piwik::translate('Events_EventValue');
         $this->configureEventDimensionTable($view);

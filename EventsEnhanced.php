@@ -11,6 +11,7 @@ namespace Piwik\Plugins\EventsEnhanced;
 
 use Piwik\Archive\ArchiveInvalidator;
 use Piwik\Container\StaticContainer;
+use Piwik\Request;
 
 /**
  * EventsEnhanced plugin - Enhances Matomo native events reports with detailed dimension pages
@@ -38,6 +39,7 @@ class EventsEnhanced extends \Piwik\Plugin
             'AssetManager.getStylesheetFiles' => 'getStylesheetFiles',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'Url.getQueryParametersToExclude' => 'getQueryParametersToExclude',
+            'API.getReportMetadata.end' => 'makeEventReportsFindableByRowEvolution',
         ];
     }
 
@@ -89,6 +91,32 @@ class EventsEnhanced extends \Piwik\Plugin
     }
 
     /**
+     * Core row evolution only finds a report whose declared parameters are empty or match the numeric entity
+     * parameters of the call, and the event of these reports is a string read from the request. The metadata
+     * stays complete for every other caller, such as McpServer.
+     */
+    public function makeEventReportsFindableByRowEvolution(array &$reports): void
+    {
+        $request = Request::fromRequest();
+
+        if ($request->getStringParameter('method', '') !== 'API.getRowEvolution') {
+            return;
+        }
+
+        $idDimension = $request->getIntegerParameter('idDimension', 0);
+
+        foreach ($reports as &$report) {
+            if (empty($report['parameters']) || !in_array($report['module'], [$this->getPluginName(), self::PREMIUM_PLUGIN], true)) {
+                continue;
+            }
+
+            $report['parameters'] = isset($report['parameters']['idDimension']) && $idDimension > 0
+                ? ['idDimension' => $idDimension]
+                : [];
+        }
+    }
+
+    /**
      * Register JavaScript files
      *
      * @param array $jsFiles
@@ -96,6 +124,7 @@ class EventsEnhanced extends \Piwik\Plugin
     public function getJsFiles(&$jsFiles)
     {
         $jsFiles[] = 'plugins/EventsEnhanced/javascripts/eventsEnhancedRowAction.js';
+        $jsFiles[] = 'plugins/EventsEnhanced/javascripts/eventsEnhancedRowEvolution.js';
     }
 
     /**
